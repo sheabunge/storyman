@@ -39,14 +39,14 @@ USAGE
 
 ## `story config`
 
-display the list of current configuration properties
+Display the list of current configuration properties.
 
 ```
 USAGE
   $ story config
 
 DESCRIPTION
-  display the list of current configuration properties
+  Display the list of current configuration properties.
 
 ALIASES
   $ story config list
@@ -57,14 +57,14 @@ _See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman
 
 ## `story config set PROP VALUE`
 
-set a new value for a configuration property
+Set a new value for a configuration property.
 
 ```
 USAGE
   $ story config set PROP VALUE
 
 DESCRIPTION
-  set a new value for a configuration property
+  Set a new value for a configuration property.
 
 ALIASES
   $ story config s
@@ -75,14 +75,14 @@ EXAMPLES
 
 ## `story config unset PROP`
 
-reset a configuration property to its default value
+Reset a configuration property to its default value.
 
 ```
 USAGE
   $ story config unset PROP
 
 DESCRIPTION
-  reset a configuration property to its default value
+  Reset a configuration property to its default value.
 
 ALIASES
   $ story config clear
@@ -98,7 +98,7 @@ EXAMPLES
 
 ## `story get`
 
-retrieve the current story identifier
+Retrieve the current story identifier.
 
 ```
 USAGE
@@ -108,7 +108,7 @@ FLAGS
   -f, --full  include both parent and child stories
 
 DESCRIPTION
-  retrieve the current story identifier
+  Retrieve the current story identifier.
 
 ALIASES
   $ story 
@@ -142,7 +142,7 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9
 
 ## `story install`
 
-install the git prepare-commit-msg hook
+Install the git `prepare-commit-msg` hook.
 
 ```
 USAGE
@@ -152,7 +152,7 @@ FLAGS
   -f, --force  override an existing prepare-commit-msg hook
 
 DESCRIPTION
-  install the git prepare-commit-msg hook
+  Install the git `prepare-commit-msg` hook.
 
 EXAMPLES
   $ story install
@@ -311,7 +311,7 @@ DESCRIPTION
 
 ## `story set STORY [SUBSTORY]`
 
-set the active story
+Set the active story.
 
 ```
 USAGE
@@ -322,7 +322,7 @@ ARGUMENTS
   SUBSTORY  sub story
 
 DESCRIPTION
-  set the active story
+  Set the active story.
 
 EXAMPLES
   $ story set SM-123

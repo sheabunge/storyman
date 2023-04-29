@@ -2,7 +2,7 @@ import { Args } from '@oclif/core'
 import { BaseCommand } from '../base'
 
 export default class Set extends BaseCommand<typeof Set> {
-  static description = 'set the active story'
+  static description = 'Set the active story.'
 
   static examples = [
     `$ story set SM-123

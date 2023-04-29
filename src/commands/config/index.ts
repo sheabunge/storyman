@@ -1,7 +1,7 @@
 import { BaseCommand } from '../../base'
 
 export default class ConfigIndex extends BaseCommand<typeof ConfigIndex> {
-  static description = 'display the list of current configuration properties'
+  static description = 'Display the list of current configuration properties.'
 
   static aliases = ['config:list', 'config:l']
 

@@ -4,7 +4,7 @@ import * as path from 'path'
 import { Flags } from '@oclif/core'
 
 export default class Install extends BaseCommand<typeof Install> {
-  static description = 'install the git prepare-commit-msg hook'
+  static description = 'Install the git `prepare-commit-msg` hook.'
 
   static examples = [
     '$ story install'
