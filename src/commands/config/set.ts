@@ -2,7 +2,7 @@ import { Args } from '@oclif/core'
 import { BaseCommand } from '../../base'
 
 export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
-  static description = 'set a new value for a configuration property'
+  static description = 'Set a new value for a configuration property.'
 
   static examples = [
     '$ story config set defaultProject SM'
