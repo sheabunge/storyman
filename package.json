@@ -1,0 +1,20 @@
+{
+  "name": "storyman",
+  "version": "0.1.0",
+  "description": "Utility for automatically adding a story number to commit messages.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Shea Bunge <shea@sheabunge.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sheabunge/storyman.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sheabunge/storyman/issues"
+  },
+  "homepage": "https://github.com/sheabunge/storyman#readme"
+}
