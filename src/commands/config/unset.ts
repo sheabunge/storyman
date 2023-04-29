@@ -2,7 +2,7 @@ import { Args } from '@oclif/core'
 import { BaseCommand } from '../../base'
 
 export default class ConfigUnset extends BaseCommand<typeof ConfigUnset> {
-  static description = 'reset a configuration property to its default value'
+  static description = 'Reset a configuration property to its default value.'
 
   static examples = [
     '$ story config unset defaultProject'

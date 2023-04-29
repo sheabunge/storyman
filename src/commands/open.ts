@@ -2,7 +2,7 @@ import { BaseCommand } from '../base'
 import open from 'open'
 
 export default class Open extends BaseCommand<typeof Open> {
-  static description = 'open the active story in Jira'
+  static description = 'Open the active story in Jira.'
 
   static examples = [
     '$ story open'

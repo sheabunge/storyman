@@ -48,7 +48,9 @@
       "@oclif/plugin-plugins"
     ],
     "topicSeparator": " ",
-    "topics": {}
+    "topics": {
+      "config": { "description": "Manage configuration properties." }
+    }
   },
   "scripts": {
     "build": "shx rm -rf dist && tsc -b",

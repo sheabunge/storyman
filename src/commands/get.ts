@@ -2,7 +2,7 @@ import { BaseCommand } from '../base'
 import { Flags } from '@oclif/core'
 
 export default class Get extends BaseCommand<typeof Get> {
-  static description = 'retrieve the current story identifier'
+  static description = 'Retrieve the current story identifier.'
 
   static examples = [
     '$ story get\nSM-123\n'
