@@ -1,5 +1,6 @@
 import { BaseCommand } from '../base'
 import open from 'open'
+import { trimTrailingSlash } from '../utils'
 
 export default class Open extends BaseCommand<typeof Open> {
   static description = 'Open the active story in Jira.'
@@ -12,14 +13,14 @@ export default class Open extends BaseCommand<typeof Open> {
 
   async run() {
     const story = await this.getStory()
-    const baseUrl = this.userConfig.get('jiraUrl')
+    const baseUrl = await this.userConfig.get('jiraUrl')
 
     if (!baseUrl) {
       this.error('Please set the jiraUrl config property to use this command.')
       return
     }
 
-    const url = `${baseUrl}/browse/${story}`
+    const url = `${trimTrailingSlash(baseUrl)}/browse/${story}`
     this.log(`Opening ${url}`)
     await open(url)
   }

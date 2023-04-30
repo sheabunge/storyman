@@ -7,20 +7,51 @@
   "repository": "sheabunge/storyman",
   "homepage": "https://github.com/sheabunge/storyman",
   "bugs": "https://github.com/sheabunge/storyman/issues",
+  "keywords": [
+    "jira",
+    "oclif"
+  ],
   "main": "dist/index.js",
-  "bin": {
-    "story": "./bin/run"
-  },
+  "types": "dist/index.d.ts",
   "files": [
     "/bin",
     "/dist",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
+  "bin": {
+    "story": "./bin/run"
+  },
+  "scripts": {
+    "build": "shx rm -rf dist && tsc -b",
+    "lint": "eslint . --ext .ts --config .eslintrc.js",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "npm run lint",
+    "prepack": "npm run build && oclif manifest && oclif readme",
+    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "readme": "oclif readme --no-aliases",
+    "version": "npm run readme && git add README.md"
+  },
+  "oclif": {
+    "bin": "story",
+    "dirname": "story",
+    "commands": "./dist/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ],
+    "topicSeparator": " ",
+    "topics": {
+      "config": {
+        "description": "Manage configuration properties."
+      }
+    }
+  },
   "dependencies": {
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
-    "@oclif/plugin-plugins": "^2.4.7"
+    "@oclif/plugin-plugins": "^2.4.7",
+    "open": "^v8.4.2"
   },
   "devDependencies": {
     "@oclif/test": "^2.3.17",
@@ -33,40 +64,12 @@
     "eslint-config-oclif-typescript": "^1.0.3",
     "mocha": "^9",
     "oclif": "^3",
-    "open": "^9.1.0",
     "shx": "^0.3.3",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.0",
     "typescript": "^4.9.5"
   },
-  "oclif": {
-    "bin": "story",
-    "dirname": "story",
-    "commands": "./dist/commands",
-    "plugins": [
-      "@oclif/plugin-help",
-      "@oclif/plugin-plugins"
-    ],
-    "topicSeparator": " ",
-    "topics": {
-      "config": { "description": "Manage configuration properties." }
-    }
-  },
-  "scripts": {
-    "build": "shx rm -rf dist && tsc -b",
-    "lint": "eslint . --ext .ts --config .eslintrc.js",
-    "postpack": "shx rm -f oclif.manifest.json",
-    "posttest": "npm run lint",
-    "prepack": "npm run build && oclif manifest && oclif readme",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "readme": "oclif readme --no-aliases",
-    "version": "npm run readme && git add README.md"
-  },
   "engines": {
     "node": ">=12.0.0"
-  },
-  "keywords": [
-    "oclif"
-  ],
-  "types": "dist/index.d.ts"
+  }
 }

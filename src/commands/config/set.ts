@@ -11,8 +11,13 @@ export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
   static aliases = ['config:s']
 
   static args = {
-    prop: Args.string({ required: true }),
-    value: Args.string({ required: true })
+    prop: Args.string({
+      required: true,
+      options: Object.keys(BaseCommand.userConfigDefaults)
+    }),
+    value: Args.string({
+      required: true
+    })
   }
 
   async run() {
