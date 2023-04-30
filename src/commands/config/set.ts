@@ -27,7 +27,10 @@ export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
       this.error(`invalid property ${prop}`)
     }
 
-    await this.userConfig.set(prop, value)
-    await this.userConfig.write()
+    this.userConfig.set(prop, value)
+
+    return this.userConfig.write().then(() => {
+      this.log(`${prop} config property is now ${value}.`)
+    })
   }
 }

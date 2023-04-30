@@ -1,4 +1,5 @@
 import { Command, Interfaces } from '@oclif/core'
+import { homedir } from 'os'
 import * as path from 'path'
 import * as fs from 'fs/promises'
 import UserConfig from './config'
@@ -13,7 +14,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   protected args!: Args<T>
   protected flags!: Flags<T>
 
-  private readonly userConfigFile: string = path.join(this.config.configDir, 'storyman.json')
+  private readonly userConfigFile: string = path.join(homedir(), '.storyman.json')
 
   protected static userConfigDefaults: UserConfigProps = {
     jiraUrl: '',
@@ -49,6 +50,8 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
 
     return fs.writeFile(storyFile, contents)
       .then(() => this.getStory())
-      .then(updatedStory => console.info(`Current story is now ${Object.values(updatedStory).join(' ').trim()}.`))
+      .then(updatedStory =>
+        console.info(`Current story is now ${Object.values(updatedStory).join(' ').trim()}.`)
+      )
   }
 }

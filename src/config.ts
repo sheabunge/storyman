@@ -1,9 +1,9 @@
 import * as fs from 'fs/promises'
 
 const parseJson = <T>(data: string, allowedProperties: Array<keyof T | string>): Partial<T> =>
-  Object.fromEntries(
-    Object.entries(JSON.parse(data)).filter(([prop]) => prop in allowedProperties)
-  ) as Partial<T>
+  (Object.fromEntries(
+    Object.entries(JSON.parse(data)).filter(([prop]) => allowedProperties.includes(prop))
+  ) as Partial<T>)
 
 export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   private readonly configFile: string
@@ -22,7 +22,8 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   }
 
   private read = (): Promise<Partial<T>> =>
-    this.stored ? Promise.resolve(this.stored) :
+    this.stored ?
+      Promise.resolve(this.stored) :
       fs.readFile(this.configFile)
         .then(content => {
           this.stored = parseJson(content.toString(), Object.keys(this.defaults))
