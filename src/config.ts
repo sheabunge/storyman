@@ -1,9 +1,14 @@
 import * as fs from 'fs/promises'
 
+const FALSY_STRINGS = ['0', 'false', 'no']
+
 const parseJson = <T>(data: string, allowedProperties: Array<keyof T | string>): Partial<T> =>
   (Object.fromEntries(
     Object.entries(JSON.parse(data)).filter(([prop]) => allowedProperties.includes(prop))
   ) as Partial<T>)
+
+const parseBoolean = (value: unknown) =>
+  value && !(typeof value === 'string' && FALSY_STRINGS.includes(value.toLowerCase()))
 
 export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   private readonly configFile: string
@@ -48,8 +53,14 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
       this.local[prop] ?? stored[prop] ?? this.defaults[prop]
     )
 
-  set = <K extends keyof T>(prop: K, value: T[K]) => {
-    this.local[prop] = value
+  set = <K extends keyof T>(prop: K, value: T[K]): T[K] => {
+    const actualValue =
+      'boolean' === typeof this.defaults[prop] ? parseBoolean(value) as T[K] :
+        'number' === typeof this.defaults[prop] ? Number(value) as T[K] :
+          value
+
+    this.local[prop] = actualValue
+    return actualValue
   }
 
   unset = (prop: keyof T): Promise<void> =>
