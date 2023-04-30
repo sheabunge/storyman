@@ -15,14 +15,16 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
 
   private readonly userConfigFile: string = path.join(this.config.configDir, 'storyman.json')
 
-  protected readonly userConfig = new UserConfig<UserConfigProps>(this.userConfigFile, {
+  protected static userConfigDefaults: UserConfigProps = {
     jiraUrl: '',
     storyFile: '~/.story',
     defaultAuthor: '',
     defaultProject: '',
     requireStory: true,
-    requireAuthor: true
-  })
+    requireAuthor: false
+  }
+
+  protected readonly userConfig = new UserConfig(this.userConfigFile, BaseCommand.userConfigDefaults)
 
   getStoryFile = () =>
     this.userConfig.get('storyFile').then(expandPath)
