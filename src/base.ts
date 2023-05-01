@@ -90,14 +90,14 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     const storyFile = await this.storyFile
     const defaultProject = await (await this.userConfig).get('defaultProject')
 
-    const contents = [story, subStory].map(suffix =>
+    const contents = [story, subStory].filter(Boolean).map(suffix =>
       suffix && defaultProject && /^\d+$/.test(suffix) ? `${defaultProject}-${suffix}` : suffix
     ).join(' ')
 
     return writeFile(storyFile, contents)
       .then(() => this.getStory())
       .then(updatedStory =>
-        this.log(`Current story is now ${Object.values(updatedStory).join(' ').trim()}.`)
+        this.log(`Current story is now ${Object.values(updatedStory).filter(Boolean).join(' ')}.`)
       )
   }
 }
