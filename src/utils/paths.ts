@@ -1,6 +1,9 @@
 import { homedir } from 'os'
 import { resolve } from 'path'
 
+export const STORY_FILENAME = '.story'
+export const USER_CONFIG_FILENAME = '.storyman.json'
+
 export const expandPath = (filename: string): string =>
   resolve(filename.replace(/^~/, homedir()))
 
