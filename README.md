@@ -4,6 +4,9 @@ storyman
 When using project-tracking tools such as Jira, it can be useful to include a story tag (such as EX-123) in commit
 messages, so that changes can be linked to stories and vice-versa.
 
+Doing so can quickly become tiresome, and it's incredibly easy to forget to include a story tag, or to use
+the wrong story by mistake.
+
 Instead of needing to always manually specify the story number when committing, this tool will handle that for you.
 
 # Usage
@@ -20,13 +23,13 @@ Optionally, create an empty `.story` file in your project directory, or in the p
 you'd like to share the same story across multiple Git repositories. This file will be used to store the current story
 number.
 
-If you skip this step, then a `.story` file will be automatically created in the home directory.
-
 ```sh-session
 $ touch .story
 ```
 
-Finally, you'll also need to install storyman in any Git repositories where you want automatically tagged commits. This
+If you skip this step, then a `.story` file will be automatically created in the home directory.
+
+Finally, you'll also need to install storyman in any Git repositories where you want automatically-tagged commits. This
 can be achieved by running `story install` inside an existing Git repository, e,g.:
 
 ```sh-session
@@ -53,44 +56,32 @@ $ story set EX-123
 Current story is now EX-123.
 ```
 
-You can always check what the current story is using `story get`:
+You can always check what the current story is using `story`:
 
 ```sh-session
-$ story get
+$ story
 EX-123
 ```
 
 When making a commit, storyman will automatically add the current story tag to the beginning of the commit message:
 
 ```sh-session
-git commit -m "Made some changes."
-
+$ git commit -m "Made some changes."
+[master fb98b25] EX-123 Made some changes.
+ 1 file changed, 71 insertions(+), 3 deletions(-)
 ```
 
-<!-- toc -->
-
-* [Usage](#usage)
-* [Commands](#commands)
-
-<!-- tocstop -->
-
-# Usage
-
-<!-- usage -->
+You can also use the `story` command when creating branches:
 
 ```sh-session
-$ story COMMAND
-running command...
-$ story (--version)
-storyman/1.0.0 darwin-arm64 node-v18.12.1
-$ story --help [COMMAND]
-USAGE
-  $ story COMMAND
-...
+git checkout -b $(story)-fixes
+Switched to a new branch 'EX-123-fixes'
 ```
-<!-- usagestop -->
-# Commands
+
+# Command Reference
+
 <!-- commands -->
+
 * [`story config`](#story-config)
 * [`story config set PROP VALUE`](#story-config-set-prop-value)
 * [`story config unset PROP`](#story-config-unset-prop)
@@ -118,7 +109,8 @@ ALIASES
   $ story config l
 ```
 
-_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
+_See
+code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
