@@ -21,7 +21,7 @@ Current story is now SM-123.
   }
 
   async run() {
-    const { args: { story, subStory } } = await this.parse(Set)
-    await this.setStory(story, subStory)
+    const { args: { story: parent, subStory: child } } = await this.parse(Set)
+    await this.setStory({ parent, child })
   }
 }

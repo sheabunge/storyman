@@ -1,7 +1,7 @@
-import { ux } from '@oclif/core'
+import { Args, ux } from '@oclif/core'
 import * as open from 'open'
 import { BaseCommand } from '../base-command'
-import { trimTrailingSlash } from '../utils'
+import { prefixStory, trimTrailingSlash } from '../utils'
 
 export default class Open extends BaseCommand<typeof Open> {
   static description = 'Open the active story in Jira.'
@@ -12,6 +12,13 @@ export default class Open extends BaseCommand<typeof Open> {
 
   static aliases = ['jira']
 
+  static args = {
+    story: Args.string({
+      required: false,
+      description: 'Optionally specify a different story to open, instead of the current story.'
+    })
+  }
+
   private getBaseUrl = async () => {
     let url = await (await this.userConfig).get('jiraUrl')
 
@@ -20,7 +27,7 @@ export default class Open extends BaseCommand<typeof Open> {
       url = await ux.prompt('What is your Jira site URL?', { required: true })
 
       if (!url || !url.toLowerCase().startsWith('http')) {
-        this.warn("That doesn't appear to be a valid URL.")
+        this.warn('That doesn\'t appear to be a valid URL.')
         url = ''
         continue
       }
@@ -35,10 +42,20 @@ export default class Open extends BaseCommand<typeof Open> {
   }
 
   async run() {
-    const story = await this.getStory()
+    const { args: { story: storyOverride } } = await this.parse(Open)
     const baseUrl = await this.getBaseUrl()
 
-    const url = `${trimTrailingSlash(baseUrl)}/browse/${story.child ?? story.parent}`
+    const story = await (async (): Promise<string> => {
+      if (storyOverride) {
+        const defaultProject = await (await this.userConfig).get('defaultProject')
+        return prefixStory(defaultProject, storyOverride)
+      }
+
+      const story = await this.getStory()
+      return story.child ?? story.parent
+    })()
+
+    const url = `${trimTrailingSlash(baseUrl)}/browse/${story}`
 
     this.log(`Opening ${url}`)
     await open(url)

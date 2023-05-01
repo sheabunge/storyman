@@ -83,15 +83,11 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
         .catch(() =>
           this.error('Could not find story file.')))
 
-  setStory = async (story: string, subStory?: string) => {
+  setStory = async (story: Story) => {
     const storyFile = await this.storyFile
     const defaultProject = await (await this.userConfig).get('defaultProject')
 
-    const contents = [story, subStory].filter(Boolean).map(suffix =>
-      suffix && defaultProject && /^\d+$/.test(suffix) ? `${defaultProject}-${suffix}` : suffix
-    ).join(' ')
-
-    return writeFile(storyFile, contents)
+    return writeFile(storyFile, formatStory(story, defaultProject))
       .then(() => this.getStory())
       .then(updatedStory =>
         this.log(`Current story is now ${formatStory(updatedStory)}.`)

@@ -15,6 +15,8 @@ export default class Get extends BaseCommand<typeof Get> {
     })
   }
 
+  static aliases = ['story']
+
   async run() {
     const { flags } = await this.parse(Get)
     const { parent, child } = await this.getStory()
