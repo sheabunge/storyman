@@ -3,7 +3,7 @@ import { homedir } from 'os'
 import { resolve, join } from 'path'
 import { readFile, writeFile, access } from 'fs/promises'
 import UserConfig from './config'
-import { UserConfigProps } from './types/UserConfigProps'
+import { UserConfigProps } from './types/user-config-props'
 import { Story } from './types/Story'
 import { formatStory } from './utils'
 

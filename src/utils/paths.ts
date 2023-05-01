@@ -1,6 +1,5 @@
 import { homedir } from 'os'
 import { resolve } from 'path'
-import { Story } from '../types/story'
 
 export const expandPath = (filename: string): string =>
   resolve(filename.replace(/^~/, homedir()))

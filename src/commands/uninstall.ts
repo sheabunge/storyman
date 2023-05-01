@@ -1,6 +1,6 @@
 import { rm } from 'fs/promises'
 import { resolve } from 'path'
-import { InstallCommand } from '../installCommand'
+import { InstallCommand } from '../install-command'
 
 export default class Uninstall extends InstallCommand<typeof Uninstall> {
   static description = 'Uninstall the git `prepare-commit-msg` hook.'

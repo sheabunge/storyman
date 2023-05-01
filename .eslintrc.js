@@ -3,8 +3,6 @@ module.exports = {
     node: true
   },
   extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'oclif',
     'oclif-typescript'
   ],
@@ -18,7 +16,6 @@ module.exports = {
     'unicorn/prefer-module': 'off',
     'unicorn/no-nested-ternary': 'off',
     'unicorn/prefer-node-protocol': 'off',
-    'unicorn/filename-case': ['error', { 'case': 'camelCase' }],
     'unicorn/import-style': ['error', {
       'styles': {
         'path': { 'namespace': true, 'named': true }
