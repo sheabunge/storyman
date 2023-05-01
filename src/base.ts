@@ -6,8 +6,8 @@ import UserConfig from './config'
 import { UserConfigProps } from './types/UserConfigProps'
 import { Story } from './types/Story'
 
-const STORY_FILENAME = '.story'
-const USER_CONFIG_FILENAME = '.storyman.json'
+export const STORY_FILENAME = '.story'
+export const USER_CONFIG_FILENAME = '.storyman.json'
 
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<T['flags']>

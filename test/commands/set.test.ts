@@ -1,13 +1,16 @@
 import { expect, test } from '@oclif/test'
-import { createStoryFile, readStoryFile } from '../utils'
+import { cleanupStoryFiles, createStoryFile, readStoryFile } from '../utils'
 
 const OLD_STORY = 'TEST-1'
 const NEW_STORY = 'TEST-2'
 const NEW_CHILD_STORY = 'TEST-12'
 
+const setup = async () => createStoryFile(OLD_STORY)
+
 describe('set story with child story', () => {
   test
-    .do(async () => createStoryFile(OLD_STORY))
+    .do(setup)
+    .finally(cleanupStoryFiles)
     .stdout()
     .command(['set', NEW_STORY])
     .it('sets a new story', async context => {
@@ -16,7 +19,8 @@ describe('set story with child story', () => {
     })
 
   test
-    .do(async () => createStoryFile(OLD_STORY))
+    .do(setup)
+    .finally(cleanupStoryFiles)
     .stdout()
     .command(['set', NEW_STORY, NEW_CHILD_STORY])
     .it('sets a new story with child story', async context => {
