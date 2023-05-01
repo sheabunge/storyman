@@ -1,16 +1,84 @@
 storyman
-=================
+========
 
-Utility for automatically adding a story number to commit messages.
+When using project-tracking tools such as Jira, it can be useful to include a story tag (such as EX-123) in commit
+messages, so that changes can be linked to stories and vice-versa.
 
-<!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+Instead of needing to always manually specify the story number when committing, this tool will handle that for you.
+
 # Usage
-<!-- usage -->
+
+## Installation
+
+Install through npm:
+
 ```sh-session
 $ npm install -g storyman
+```
+
+Optionally, create an empty `.story` file in your project directory, or in the parent directory of your projects if
+you'd like to share the same story across multiple Git repositories. This file will be used to store the current story
+number.
+
+If you skip this step, then a `.story` file will be automatically created in the home directory.
+
+```sh-session
+$ touch .story
+```
+
+Finally, you'll also need to install storyman in any Git repositories where you want automatically tagged commits. This
+can be achieved by running `story install` inside an existing Git repository, e,g.:
+
+```sh-session
+$ cd ~/projects/some-project
+$ story install
+Created prepare-commit-msg hook for /home/shea/projects/some-project.
+```
+
+Or by passing a repository to `story install` as the first argument:
+
+```sh-session
+$ story install ~/projects/another-project
+Created prepare-commit-msg hook for /home/shea/projects/another-project.
+```
+
+Now you're ready to use storyman!
+
+## Getting Started
+
+When working on a new story, or switching between stories, use the `story set` command:
+
+```sh-session
+$ story set EX-123
+Current story is now EX-123.
+```
+
+You can always check what the current story is using `story get`:
+
+```sh-session
+$ story get
+EX-123
+```
+
+When making a commit, storyman will automatically add the current story tag to the beginning of the commit message:
+
+```sh-session
+git commit -m "Made some changes."
+
+```
+
+<!-- toc -->
+
+* [Usage](#usage)
+* [Commands](#commands)
+
+<!-- tocstop -->
+
+# Usage
+
+<!-- usage -->
+
+```sh-session
 $ story COMMAND
 running command...
 $ story (--version)
