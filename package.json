@@ -38,7 +38,9 @@
     "dirname": "story",
     "commands": "./dist/commands",
     "plugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-not-found",
+      "@oclif/plugin-warn-if-update-available"
     ],
     "topicSeparator": " ",
     "topics": {
@@ -50,6 +52,8 @@
   "dependencies": {
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
+    "@oclif/plugin-not-found": "^2.3.23",
+    "@oclif/plugin-warn-if-update-available": "^2.0.36",
     "open": "^v8.4.2"
   },
   "devDependencies": {
