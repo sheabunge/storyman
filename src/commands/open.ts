@@ -13,7 +13,7 @@ export default class Open extends BaseCommand<typeof Open> {
 
   async run() {
     const story = await this.getStory()
-    const baseUrl = await this.userConfig.get('jiraUrl')
+    const baseUrl = await (await this.userConfig).get('jiraUrl')
 
     if (!baseUrl) {
       this.error('Please set the jiraUrl config property to use this command.')

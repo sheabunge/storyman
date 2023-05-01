@@ -10,17 +10,18 @@ module.exports = {
   ],
   rules: {
     'indent': ['error', 2],
+    'yoda': ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'node/no-missing-import': 'off',
     'unicorn/prefer-module': 'off',
+    'unicorn/no-nested-ternary': 'off',
     'unicorn/prefer-node-protocol': 'off',
     'unicorn/filename-case': ['error', { 'case': 'camelCase' }],
     'unicorn/import-style': ['error', {
       'styles': {
-        'util': false,
-        'path': { 'namespace': true }
+        'path': { 'namespace': true, 'named': true }
       }
     }],
     'space-before-function-paren': ['error', {

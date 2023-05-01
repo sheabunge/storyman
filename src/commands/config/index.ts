@@ -6,7 +6,9 @@ export default class ConfigIndex extends BaseCommand<typeof ConfigIndex> {
   static aliases = ['config:list', 'config:l']
 
   async run() {
-    for (const [prop, value] of Object.entries(await this.userConfig.getAll())) {
+    const userConfig = await this.userConfig
+
+    for (const [prop, value] of Object.entries(await userConfig.getAll())) {
       this.log(`${prop} = ${JSON.stringify(value)}`)
     }
   }

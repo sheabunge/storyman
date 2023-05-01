@@ -22,14 +22,15 @@ export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
 
   async run() {
     const { args: { prop, value } } = await this.parse(ConfigSet)
+    const userConfig = await this.userConfig
 
-    if (!this.userConfig.isValid(prop)) {
+    if (!userConfig.isValid(prop)) {
       this.error(`invalid property ${prop}`)
     }
 
-    const actualValue = this.userConfig.set(prop, value)
+    const actualValue = userConfig.set(prop, value)
 
-    return this.userConfig.write().then(() => {
+    return userConfig.write().then(() => {
       this.log(`${prop} = ${actualValue}`)
     })
   }
