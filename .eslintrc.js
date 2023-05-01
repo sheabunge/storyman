@@ -8,6 +8,7 @@ module.exports = {
   ],
   rules: {
     'indent': ['error', 2],
+    'yoda': ['error', 'always'],
     'quote-props': ['error', 'consistent-as-needed'],
     'object-curly-spacing': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
