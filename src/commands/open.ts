@@ -1,6 +1,6 @@
 import { ux } from '@oclif/core'
 import * as open from 'open'
-import { BaseCommand } from '../base'
+import { BaseCommand } from '../baseCommand'
 import { trimTrailingSlash } from '../utils'
 
 export default class Open extends BaseCommand<typeof Open> {

@@ -1,4 +1,4 @@
-import { BaseCommand } from '../../base'
+import { BaseCommand } from '../../baseCommand'
 
 export default class ConfigIndex extends BaseCommand<typeof ConfigIndex> {
   static description = 'Display the list of current configuration properties.'
