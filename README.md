@@ -30,7 +30,7 @@ $ touch .story
 If you skip this step, then a `.story` file will be automatically created in the home directory.
 
 Finally, you'll also need to install storyman in any Git repositories where you want automatically-tagged commits. This
-can be achieved by running `story install` inside an existing Git repository, e,g.:
+can be achieved by running `story install` inside an existing Git repository:
 
 ```sh-session
 $ cd ~/projects/some-project
@@ -47,7 +47,7 @@ Created prepare-commit-msg hook for /home/shea/projects/another-project.
 
 Now you're ready to use storyman!
 
-## Getting Started
+## Basic Usage
 
 When working on a new story, or switching between stories, use the `story set` command:
 
@@ -81,17 +81,40 @@ Switched to a new branch 'EX-123-fixes'
 # Command Reference
 
 <!-- commands -->
-
+* [`story`](#story)
 * [`story config`](#story-config)
 * [`story config set PROP VALUE`](#story-config-set-prop-value)
 * [`story config unset PROP`](#story-config-unset-prop)
-* [`story get`](#story-get)
 * [`story help [COMMANDS]`](#story-help-commands)
 * [`story info`](#story-info)
 * [`story install [REPO]`](#story-install-repo)
 * [`story open`](#story-open)
 * [`story set STORY [SUBSTORY]`](#story-set-story-substory)
 * [`story uninstall [REPO]`](#story-uninstall-repo)
+
+## `story`
+
+Retrieve the current story identifier.
+
+```
+USAGE
+  $ story [-f]
+
+FLAGS
+  -f, --full  include both parent and child stories
+
+DESCRIPTION
+  Retrieve the current story identifier.
+
+ALIASES
+  $ story get
+
+EXAMPLES
+  $ story
+  SM-123
+```
+
+_See code: [dist/commands/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/index.ts)_
 
 ## `story config`
 
@@ -109,8 +132,7 @@ ALIASES
   $ story config l
 ```
 
-_See
-code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
+_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
@@ -152,30 +174,6 @@ ALIASES
 EXAMPLES
   $ story config unset defaultProject
 ```
-
-## `story get`
-
-Retrieve the current story identifier.
-
-```
-USAGE
-  $ story get [-f]
-
-FLAGS
-  -f, --full  include both parent and child stories
-
-DESCRIPTION
-  Retrieve the current story identifier.
-
-ALIASES
-  $ story 
-
-EXAMPLES
-  $ story get
-  SM-123
-```
-
-_See code: [dist/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/get.ts)_
 
 ## `story help [COMMANDS]`
 
