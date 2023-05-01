@@ -14,7 +14,8 @@ export default class ConfigUnset extends BaseCommand<typeof ConfigUnset> {
   static args = {
     prop: Args.string({
       name: 'prop',
-      required: true
+      required: true,
+      options: Object.keys(BaseCommand.userConfigDefaults)
     })
   }
 
