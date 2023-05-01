@@ -7,7 +7,7 @@ const HOOK_FILE = '.git/hooks/prepare-commit-msg'
 
 const SH_HOOK = [
   '#!/bin/sh',
-  'story prepare-commit-msg',
+  'story prepare-commit-msg "$@"',
   ''
 ].join('\n')
 
