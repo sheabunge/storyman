@@ -1,4 +1,4 @@
-Story-Man
+storyman
 =================
 
 Utility for automatically adding a story number to commit messages.
@@ -14,7 +14,7 @@ $ npm install -g storyman
 $ story COMMAND
 running command...
 $ story (--version)
-storyman/0.1.0 darwin-arm64 node-v18.12.1
+storyman/1.0.0 darwin-arm64 node-v18.12.1
 $ story --help [COMMAND]
 USAGE
   $ story COMMAND
@@ -56,7 +56,7 @@ ALIASES
   $ story config l
 ```
 
-_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/config/index.ts)_
+_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
@@ -121,7 +121,7 @@ EXAMPLES
   SM-123
 ```
 
-_See code: [dist/commands/get.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/get.ts)_
+_See code: [dist/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/get.ts)_
 
 ## `story help [COMMANDS]`
 
@@ -162,7 +162,7 @@ EXAMPLES
   Reading configuration from /home/shea/.storyman.json
 ```
 
-_See code: [dist/commands/info.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/info.ts)_
+_See code: [dist/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/info.ts)_
 
 ## `story install [REPO]`
 
@@ -185,7 +185,7 @@ EXAMPLES
   $ story install
 ```
 
-_See code: [dist/commands/install.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/install.ts)_
+_See code: [dist/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/install.ts)_
 
 ## `story open`
 
@@ -205,7 +205,7 @@ EXAMPLES
   $ story open
 ```
 
-_See code: [dist/commands/open.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/open.ts)_
+_See code: [dist/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/open.ts)_
 
 ## `story plugins`
 
@@ -376,7 +376,7 @@ EXAMPLES
   Current story is now SM-123.
 ```
 
-_See code: [dist/commands/set.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/set.ts)_
+_See code: [dist/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/set.ts)_
 
 ## `story uninstall [REPO]`
 
@@ -396,5 +396,5 @@ EXAMPLES
   $ story uninstall
 ```
 
-_See code: [dist/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/uninstall.ts)_
+_See code: [dist/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/uninstall.ts)_
 <!-- commandsstop -->
