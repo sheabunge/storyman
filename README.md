@@ -158,6 +158,30 @@ What is your Jira site URL?: https://something.atlassian.net/
 Opening https://something.atlassian.net/browse/EX-12
 ```
 
+## Sub-stories
+
+When working with sub-stories or child stories, storyman is able to recognise and process both of these story
+numbers. Simply specify both when using `set story`:
+
+```sh-session
+$ story set EX-12 EX-20
+Current story is now EX-12 EX-20.
+```
+
+For convenience when working with branches, the basic `story` command will only output the parent story
+
+```sh-session
+$ git checkout $(story)-fixes
+Switched to branch 'EX-12-fixes'
+```
+
+Both stories will be included in commit messages, and can be retrieved by passing the `--full` flag to `story get`:
+
+```sh-session
+$ story get --full
+EX-12 EX-20
+```
+
 ## Repository-specific stories
 
 Storyman will always look for a `.story` file in the current working directory, and then work up the directory tree
