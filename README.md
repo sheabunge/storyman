@@ -195,7 +195,6 @@ properties that can be altered with the `story config` commands.
 # Command Reference
 
 <!-- commands -->
-
 * [`story autocomplete [SHELL]`](#story-autocomplete-shell)
 * [`story config`](#story-config)
 * [`story config set PROP VALUE`](#story-config-set-prop-value)
@@ -210,7 +209,7 @@ properties that can be altered with the `story config` commands.
 
 ## `story autocomplete [SHELL]`
 
-display autocomplete installation instructions
+Display autocomplete installation instructions.
 
 ```
 USAGE
@@ -223,7 +222,7 @@ FLAGS
   -r, --refresh-cache  Refresh cache (ignores displaying instructions)
 
 DESCRIPTION
-  display autocomplete installation instructions
+  Display autocomplete installation instructions.
 
 EXAMPLES
   $ story autocomplete
@@ -235,8 +234,7 @@ EXAMPLES
   $ story autocomplete --refresh-cache
 ```
 
-_See
-code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v2.1.9/src/commands/autocomplete/index.ts)_
+_See code: [dist/commands/autocomplete.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/autocomplete.ts)_
 
 ## `story config`
 
@@ -254,8 +252,7 @@ ALIASES
   $ story config l
 ```
 
-_See
-code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/config/index.ts)_
+_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
@@ -313,7 +310,7 @@ DESCRIPTION
   Retrieve the current story identifier.
 
 ALIASES
-  $ story story
+  $ story 
 
 EXAMPLES
   $ story
@@ -340,7 +337,7 @@ DESCRIPTION
   Display help for story.
 ```
 
-_See code: [dist/commands/help.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
 
 ## `story info`
 
@@ -365,7 +362,7 @@ _See code: [dist/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1
 
 ## `story install [REPO]`
 
-Install the git `prepare-commit-msg` hook.
+Install the git prepare-commit-msg hook.
 
 ```
 USAGE
@@ -378,10 +375,16 @@ FLAGS
   -f, --force  override an existing prepare-commit-msg hook
 
 DESCRIPTION
+  Install the git prepare-commit-msg hook.
+
   Install the git `prepare-commit-msg` hook.
 
 EXAMPLES
   $ story install
+  Created prepare-commit-msg hook for /home/shea/projects/some-project.
+
+  $ story install ~/projects/another-project
+  Created prepare-commit-msg hook for /home/shea/projects/another-project.
 ```
 
 _See code: [dist/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/install.ts)_
@@ -395,7 +398,7 @@ USAGE
   $ story open [STORY]
 
 ARGUMENTS
-  STORY  Optionally specify a different story to open, instead of the current story.
+  STORY  Open this story, instead of the current story.
 
 DESCRIPTION
   Open the active story in Jira.
@@ -405,6 +408,13 @@ ALIASES
 
 EXAMPLES
   $ story open
+  Opening https://something.atlassian.net/browse/SM-12
+
+  $ story open 42
+  Opening https://something.atlassian.net/browse/SM-42
+
+  $ story open TS-19
+  Opening https://something.atlassian.net/browse/TS-19
 ```
 
 _See code: [dist/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/open.ts)_
@@ -433,7 +443,7 @@ _See code: [dist/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.
 
 ## `story uninstall [REPO]`
 
-Uninstall the git `prepare-commit-msg` hook.
+Uninstall the git prepare-commit-msg hook.
 
 ```
 USAGE
@@ -443,6 +453,8 @@ ARGUMENTS
   REPO  [default: ./] Path to Git repository. Defaults to current directory.
 
 DESCRIPTION
+  Uninstall the git prepare-commit-msg hook.
+
   Uninstall the git `prepare-commit-msg` hook.
 
 EXAMPLES
