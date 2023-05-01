@@ -28,7 +28,9 @@ USAGE
 * [`story config unset PROP`](#story-config-unset-prop)
 * [`story get`](#story-get)
 * [`story help [COMMANDS]`](#story-help-commands)
-* [`story install`](#story-install)
+* [`story info`](#story-info)
+* [`story install [REPO]`](#story-install-repo)
+* [`story open`](#story-open)
 * [`story plugins`](#story-plugins)
 * [`story plugins:inspect PLUGIN...`](#story-pluginsinspect-plugin)
 * [`story plugins:install PLUGIN...`](#story-pluginsinstall-plugin)
@@ -36,6 +38,7 @@ USAGE
 * [`story plugins:uninstall PLUGIN...`](#story-pluginsuninstall-plugin)
 * [`story plugins update`](#story-plugins-update)
 * [`story set STORY [SUBSTORY]`](#story-set-story-substory)
+* [`story uninstall [REPO]`](#story-uninstall-repo)
 
 ## `story config`
 
@@ -140,13 +143,37 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
 
-## `story install`
+## `story info`
+
+View information about the current story environment.
+
+```
+USAGE
+  $ story info
+
+DESCRIPTION
+  View information about the current story environment.
+
+EXAMPLES
+  $ story info
+  Current story is SM-123
+  Current child story is SM-134
+  Reading story from /home/shea/.story
+  Reading configuration from /home/shea/.storyman.json
+```
+
+_See code: [dist/commands/info.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/info.ts)_
+
+## `story install [REPO]`
 
 Install the git `prepare-commit-msg` hook.
 
 ```
 USAGE
-  $ story install [-f]
+  $ story install [REPO] [-f]
+
+ARGUMENTS
+  REPO  [default: ./] Path to Git repository. Defaults to current directory.
 
 FLAGS
   -f, --force  override an existing prepare-commit-msg hook
@@ -159,6 +186,26 @@ EXAMPLES
 ```
 
 _See code: [dist/commands/install.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/install.ts)_
+
+## `story open`
+
+Open the active story in Jira.
+
+```
+USAGE
+  $ story open
+
+DESCRIPTION
+  Open the active story in Jira.
+
+ALIASES
+  $ story jira
+
+EXAMPLES
+  $ story open
+```
+
+_See code: [dist/commands/open.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/open.ts)_
 
 ## `story plugins`
 
@@ -330,4 +377,24 @@ EXAMPLES
 ```
 
 _See code: [dist/commands/set.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/set.ts)_
+
+## `story uninstall [REPO]`
+
+Uninstall the git `prepare-commit-msg` hook.
+
+```
+USAGE
+  $ story uninstall [REPO]
+
+ARGUMENTS
+  REPO  [default: ./] Path to Git repository. Defaults to current directory.
+
+DESCRIPTION
+  Uninstall the git `prepare-commit-msg` hook.
+
+EXAMPLES
+  $ story uninstall
+```
+
+_See code: [dist/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v0.1.0/dist/commands/uninstall.ts)_
 <!-- commandsstop -->
