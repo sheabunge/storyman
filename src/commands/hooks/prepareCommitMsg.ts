@@ -1,17 +1,15 @@
 import { readFile, writeFile } from 'fs/promises'
 import { EOL } from 'os'
 import { BaseCommand } from '../../base'
-import { Args, Flags } from '@oclif/core'
+import { Args } from '@oclif/core'
 import { Story } from '../../types/story'
 import { formatStory } from '../../utils'
 
 const PREFIX = '[storyman]'
-
-const VALID_SOURCES = ['message', 'commit']
+const VALID_SOURCES = new Set(['message', 'commit'])
+const AUTHOR_RE = /\[(?<author>.+)]\s*^/m
 
 const splitStory = (story: string) => story.split('-', 1)
-
-const AUTHOR_RE = /\[(?<author>.+)]\s*^/m
 
 export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMsg> {
   static hidden = true
@@ -39,7 +37,7 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
       projects.add(childProject)
     }
 
-    return new RegExp(`/(?:${Array.from(projects.values()).join('|')})-\d+/`)
+    return new RegExp(`/(?:${[...projects.values()].join('|')})-\\d+/`)
   }
 
   private async getStoryTag(story: Story, commitMessage: string): Promise<string | undefined> {
@@ -66,7 +64,7 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
   async run() {
     const { args: { commitMessageFile, commitSource } } = await this.parse(PrepareCommitMsg)
 
-    if (commitSource && !VALID_SOURCES.includes(commitSource)) {
+    if (commitSource && !VALID_SOURCES.has(commitSource)) {
       this.log(`${PREFIX} This is a ${commitSource} commit, will leave untagged.`)
       this.exit(0)
     }

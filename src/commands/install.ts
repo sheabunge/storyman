@@ -1,5 +1,6 @@
 import { Args, Flags } from '@oclif/core'
-import { access, writeFile, chmod, stat } from 'fs/promises'
+import { access, writeFile, chmod } from 'fs/promises'
+import { EOL } from 'os'
 import { dirname, join } from 'path'
 import { BaseCommand } from '../base'
 
@@ -9,7 +10,7 @@ const SH_HOOK = [
   '#!/bin/sh',
   'story prepare-commit-msg "$@"',
   ''
-].join('\n')
+].join(EOL)
 
 export default class Install extends BaseCommand<typeof Install> {
   static description = 'Install the git `prepare-commit-msg` hook.'
