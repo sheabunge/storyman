@@ -97,7 +97,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return writeFile(storyFile, contents)
       .then(() => this.getStory())
       .then(updatedStory =>
-        console.info(`Current story is now ${Object.values(updatedStory).join(' ').trim()}.`)
+        this.log(`Current story is now ${Object.values(updatedStory).join(' ').trim()}.`)
       )
   }
 }
