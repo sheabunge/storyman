@@ -1,6 +1,6 @@
 {
   "name": "storyman",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Utility for automatically adding a story number to commit messages.",
   "author": "Shea Bunge <shea@sheabunge.com>",
   "license": "MIT",
