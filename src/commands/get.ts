@@ -1,7 +1,7 @@
 import { BaseCommand } from '../base-command'
 import { Flags } from '@oclif/core'
 
-export default class Index extends BaseCommand<typeof Index> {
+export default class Get extends BaseCommand<typeof Get> {
   static description = 'Retrieve the current story identifier.'
 
   static examples = [
@@ -15,10 +15,8 @@ export default class Index extends BaseCommand<typeof Index> {
     })
   }
 
-  static aliases = ['get']
-
   async run() {
-    const { flags } = await this.parse(Index)
+    const { flags } = await this.parse(Get)
     const { parent, child } = await this.getStory()
 
     this.log(`${parent} ${flags.full ? child : ''}`.trim())

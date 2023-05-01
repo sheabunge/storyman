@@ -37,9 +37,9 @@
     "bin": "story",
     "dirname": "story",
     "commands": "./dist/commands",
+    "default": "index",
     "plugins": [
       "@oclif/plugin-help",
-      "@oclif/plugin-not-found",
       "@oclif/plugin-autocomplete",
       "@oclif/plugin-warn-if-update-available"
     ],
@@ -48,6 +48,9 @@
       "config": {
         "description": "Manage configuration properties."
       }
+    },
+    "hooks": {
+      "command_not_found": "./dist/hooks/not-found"
     }
   },
   "dependencies": {

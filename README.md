@@ -230,7 +230,7 @@ EXAMPLES
   SM-123
 ```
 
-_See code: [dist/commands/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/index.ts)_
+_See code: [dist/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/index.ts)_
 
 ## `story config`
 
@@ -249,7 +249,7 @@ ALIASES
 ```
 
 _See
-code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
+code: [dist/commands/config/get.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
