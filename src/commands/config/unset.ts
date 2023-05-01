@@ -20,12 +20,13 @@ export default class ConfigUnset extends BaseCommand<typeof ConfigUnset> {
 
   async run() {
     const { args: { prop } } = await this.parse(ConfigUnset)
+    const userConfig = await this.userConfig
 
-    if (!this.userConfig.isValid(prop)) {
+    if (!userConfig.isValid(prop)) {
       this.error(`invalid property ${prop}`)
     }
 
-    await this.userConfig.unset(prop)
-    await this.userConfig.write()
+    await userConfig.unset(prop)
+    await userConfig.write()
   }
 }
