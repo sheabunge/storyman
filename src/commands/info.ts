@@ -24,7 +24,8 @@ Reading configuration from /home/shea/.storyman.json
       this.log(`Current child story is ${child}`)
     }
 
-    this.log(`\nReading story from ${storyFile}`)
+    this.log()
+    this.log(`Reading story from ${storyFile}`)
     this.log(`Reading configuration from ${userConfig.configFile}`)
   }
 }

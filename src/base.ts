@@ -34,7 +34,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     defaultAuthor: '',
     jiraUrl: '',
     projects: '',
-    defaultProject: '',
+    defaultProject: ''
   }
 
   private _storyDir: string | undefined
