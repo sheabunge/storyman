@@ -11,10 +11,16 @@ const SH_HOOK = [
 ].join(EOL)
 
 export default class Install extends InstallCommand<typeof Install> {
+  static summary = 'Install the git prepare-commit-msg hook.'
   static description = 'Install the git `prepare-commit-msg` hook.'
 
   static examples = [
-    '$ story install'
+    `$ story install
+Created prepare-commit-msg hook for /home/shea/projects/some-project.
+`,
+    `$ story install ~/projects/another-project
+Created prepare-commit-msg hook for /home/shea/projects/another-project.
+`
   ]
 
   static flags = {

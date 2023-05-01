@@ -3,6 +3,7 @@ import { resolve } from 'path'
 import { InstallCommand } from '../install-command'
 
 export default class Uninstall extends InstallCommand<typeof Uninstall> {
+  static summary = 'Uninstall the git prepare-commit-msg hook.'
   static description = 'Uninstall the git `prepare-commit-msg` hook.'
 
   static examples = [
