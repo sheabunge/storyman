@@ -55,13 +55,13 @@
   },
   "dependencies": {
     "@oclif/core": "^2",
+    "@oclif/plugin-autocomplete": "^2.1.9",
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-not-found": "^2.3.23",
     "@oclif/plugin-warn-if-update-available": "^2.0.36",
     "open": "^v8.4.2"
   },
   "devDependencies": {
-    "@oclif/plugin-autocomplete": "^2.1.9",
     "@oclif/test": "^2.3.17",
     "@types/chai": "^4",
     "@types/mocha": "^9.0.0",
