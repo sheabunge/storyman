@@ -4,10 +4,10 @@ storyman
 When using project-tracking tools such as Jira, it can be useful to include a story tag (such as EX-123) in commit
 messages, so that changes can be linked to stories and vice-versa.
 
-Doing so can quickly become tiresome, and it's incredibly easy to forget to include a story tag, or to use
-the wrong story by mistake.
+However, doing so manually can quickly become tiresome, and it's incredibly easy to forget to include a story tag, or
+to use the wrong story by mistake.
 
-Instead of needing to always manually specify the story number when committing, this tool will handle that for you.
+Instead of needing to always manually specify the story number when committing, this tool can handle that for you.
 
 # Usage
 
@@ -47,7 +47,7 @@ Created prepare-commit-msg hook for /home/shea/projects/another-project.
 
 Now you're ready to use storyman!
 
-## Basic Usage
+## Basic usage
 
 When working on a new story, or switching between stories, use the `story set` command:
 
@@ -78,9 +78,101 @@ git checkout -b $(story)-fixes
 Switched to a new branch 'EX-123-fixes'
 ```
 
+## Default project
+
+If you find yourself typically working in a single project, then storyman can automatically set this for you when
+changing stories, so all you need to provide is the story number:
+
+```sh-session
+$ story set 12
+Current story is now EX-12.
+```
+
+To enable this functionality, set the `defaultProject` configuration property:
+
+```sh-session
+$ story set config defaultProject EX
+```
+
+With this enabled, it's still possible to switch to stories from different projects, as long as the full story tag
+is specified:
+
+```sh-session
+$ story set config defaultProject EX
+$ story set SM-142
+Current story is now SM-142.
+```
+
+## Tagging authors
+
+Storyman also supports workflows that involve also including the name of the commit authors in each message,
+like this:
+
+    EX-12 Made some changes. [Shea]
+
+To enable this functionality, set the `defaultAuthor` configuration property:
+
+```sh-session
+$ story config set defaultAuthor Shea
+```
+
+With this property enabled, storyman will attempt to determine whether a commit message already includes an author
+tag, and refrain from adding a second one if so. This allows for individual one-off commits with different authors
+to the default.
+
+## Story override
+
+Similarly to how the default author can be overridden in individual commits, the same functionality occurs for
+overriding the default story in a single commit.
+
+In order to use this functionality, it's necessary to specify a list of all possible project tags beforehand:
+
+```sh-session
+$ story config set projects "LIST OF PROJECT TAGS"
+```
+
+This is to ensure that only valid project keys are recognised as stories, instead of other text that matches the ABC-123
+format. Here's an example of how this works:
+
+```sh-session
+$ story config set projects "EX SM ABC SHEA"
+$ story set SM-123
+$ git commit -m "EX-12 Made some changes."
+Commit message already mentions story EX-12.
+[master bf406096] EX-12 Made some changes.
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+## Opening Jira
+
+Storyman makes it easy to navigate from code to the Jira ticket you're currently working on.
+
+Running the `story open` command will open the Jira ticket for the current story in the default web browser.
+
+The first time you run this, it will prompt to enter a Jira site URL. This can be a URL to Jira cloud or to a
+self-hosted instance:
+
+```sh-session
+$ story open
+What is your Jira site URL?: https://something.atlassian.net/
+Opening https://something.atlassian.net/browse/EX-12
+```
+
+## Repository-specific stories
+
+Storyman will always look for a `.story` file in the current working directory, and then work up the directory tree
+until a match is found, otherwise defaulting to the user's home directory.
+
+This allows you to have a global`.story` file that is shared between multiple repositories, or individual `.story` files
+that can even be committed to Git and shared amongst a team.
+
+Additionally, alongside the `.story` file will usually be a `.storyman.json` file which contains the configuration
+properties that can be altered with the `story config` commands.
+
 # Command Reference
 
 <!-- commands -->
+
 * [`story`](#story)
 * [`story config`](#story-config)
 * [`story config set PROP VALUE`](#story-config-set-prop-value)
@@ -132,7 +224,8 @@ ALIASES
   $ story config l
 ```
 
-_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
+_See
+code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.0.0/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
