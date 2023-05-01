@@ -74,7 +74,7 @@ $ git commit -m "Made some changes."
 You can also use the `story` command when creating branches:
 
 ```sh-session
-git checkout -b $(story)-fixes
+$ git checkout -b $(story)-fixes
 Switched to a new branch 'EG-123-fixes'
 ```
 
@@ -116,9 +116,8 @@ To enable this functionality, set the `defaultAuthor` configuration property:
 $ story config set defaultAuthor Shea
 ```
 
-With this property enabled, storyman will attempt to determine whether a commit message already includes an author
-tag, and refrain from adding a second one if so. This allows for individual one-off commits with different authors
-to the default.
+If you specify an author in the commit message manually, storyman will attempt to detect this and refrain from adding
+an author tag.
 
 ## Story override
 
@@ -128,14 +127,14 @@ overriding the default story in a single commit.
 In order to use this functionality, it's necessary to specify a list of all possible project tags beforehand:
 
 ```sh-session
-$ story config set projects "LIST OF PROJECT TAGS"
+$ story config set projects LIST OF PROJECT TAGS
 ```
 
 This is to ensure that only valid project keys are recognised as stories, instead of other text that matches the ABC-123
 format. Here's an example of how this works:
 
 ```sh-session
-$ story config set projects "EG SM ABC SHEA"
+$ story config set projects EG SM ABC SHEA
 $ story set SM-123
 $ git commit -m "EG-12 Made some changes."
 Commit message already mentions story EG-12.
@@ -196,6 +195,7 @@ properties that can be altered with the `story config` commands.
 # Command Reference
 
 <!-- commands -->
+
 * [`story autocomplete [SHELL]`](#story-autocomplete-shell)
 * [`story config`](#story-config)
 * [`story config set PROP VALUE`](#story-config-set-prop-value)
@@ -235,7 +235,8 @@ EXAMPLES
   $ story autocomplete --refresh-cache
 ```
 
-_See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v2.1.9/src/commands/autocomplete/index.ts)_
+_See
+code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v2.1.9/src/commands/autocomplete/index.ts)_
 
 ## `story config`
 
@@ -253,7 +254,8 @@ ALIASES
   $ story config l
 ```
 
-_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/config/index.ts)_
+_See
+code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 

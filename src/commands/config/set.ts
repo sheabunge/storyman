@@ -9,6 +9,7 @@ export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
   ]
 
   static aliases = ['config:s']
+  static strict = false
 
   static args = {
     prop: Args.string({
@@ -21,14 +22,14 @@ export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
   }
 
   async run() {
-    const { args: { prop, value } } = await this.parse(ConfigSet)
+    const { args: { prop }, argv: [, ...value] } = await this.parse(ConfigSet)
     const userConfig = await this.userConfig
 
     if (!userConfig.isValid(prop)) {
       this.error(`invalid property ${prop}`)
     }
 
-    const actualValue = userConfig.set(prop, value)
+    const actualValue = userConfig.set(prop, value.join(' ').trim())
 
     return userConfig.write().then(() => {
       this.log(`${prop} = ${actualValue}`)
