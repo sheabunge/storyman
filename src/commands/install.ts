@@ -1,9 +1,15 @@
-import { Flags } from '@oclif/core'
-import { symlink, access, unlink } from 'fs/promises'
-import { dirname, resolve } from 'path'
+import { Args, Flags } from '@oclif/core'
+import { access, writeFile, chmod, stat } from 'fs/promises'
+import { dirname, join } from 'path'
 import { BaseCommand } from '../base'
 
 const HOOK_FILE = '.git/hooks/prepare-commit-msg'
+
+const SH_HOOK = [
+  '#!/bin/sh',
+  'story prepare-commit-msg',
+  ''
+].join('\n')
 
 export default class Install extends BaseCommand<typeof Install> {
   static description = 'Install the git `prepare-commit-msg` hook.'
@@ -11,6 +17,15 @@ export default class Install extends BaseCommand<typeof Install> {
   static examples = [
     '$ story install'
   ]
+
+  static args = {
+    repo: Args.directory({
+      description: 'Path to Git repository. Defaults to current directory.',
+      required: false,
+      default: process.cwd(),
+      exists: true
+    })
+  }
 
   static flags = {
     force: Flags.boolean({
@@ -20,25 +35,24 @@ export default class Install extends BaseCommand<typeof Install> {
   }
 
   async run() {
-    const { flags } = await this.parse(Install)
+    const { flags, args: { repo } } = await this.parse(Install)
 
-    await access(dirname(HOOK_FILE)).catch(() =>
+    const hookFile = join(repo, HOOK_FILE)
+
+    await access(dirname(hookFile)).catch(() =>
       this.error('Current directory does not appear to be a Git repository.')
     )
 
-    const target = resolve('./scripts/prepare-commit-msg')
-
-    return symlink(target, HOOK_FILE)
-      .catch(() => {
-        if (flags.force) {
-          this.log('A prepare-commit-msg hook appears to already exist. Removing due to --force flag.')
-          return unlink(HOOK_FILE).then(() => symlink(target, HOOK_FILE))
-        }
+    if (await access(hookFile).then(() => true).catch(() => false)) {
+      if (flags.force) {
+        this.log('A prepare-commit-msg hook appears to already exist. Overriding due to --force flag.')
+      } else {
         this.error('A prepare-commit-msg hook appears to already exist. Please remove it before running this command, or use the --force flag.')
-      })
-      .then(() => {
-        this.debug(`Created symlink '${HOOK_FILE}' -> '${target}'`)
-        this.log(`Created prepare-commit-msg hook for ${process.cwd()}.`)
-      })
+      }
+    }
+
+    await writeFile(hookFile, SH_HOOK)
+      .then(() => chmod(hookFile, 0o755))
+      .then(() => this.log(`Created prepare-commit-msg hook for ${repo}.`))
   }
 }
