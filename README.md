@@ -204,7 +204,7 @@ properties that can be altered with the `story config` commands.
 * [`story help [COMMANDS]`](#story-help-commands)
 * [`story info`](#story-info)
 * [`story install [REPO]`](#story-install-repo)
-* [`story open`](#story-open)
+* [`story open [STORY]`](#story-open-story)
 * [`story set STORY [SUBSTORY]`](#story-set-story-substory)
 * [`story uninstall [REPO]`](#story-uninstall-repo)
 
@@ -253,7 +253,7 @@ ALIASES
   $ story config l
 ```
 
-_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.1.1/dist/commands/config/index.ts)_
+_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
@@ -310,12 +310,15 @@ FLAGS
 DESCRIPTION
   Retrieve the current story identifier.
 
+ALIASES
+  $ story story
+
 EXAMPLES
   $ story
   SM-123
 ```
 
-_See code: [dist/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.1.1/dist/commands/get.ts)_
+_See code: [dist/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/get.ts)_
 
 ## `story help [COMMANDS]`
 
@@ -335,7 +338,7 @@ DESCRIPTION
   Display help for story.
 ```
 
-_See code: [dist/commands/help.ts](https://github.com/sheabunge/storyman/blob/v1.1.1/dist/commands/help.ts)_
+_See code: [dist/commands/help.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/help.ts)_
 
 ## `story info`
 
@@ -356,7 +359,7 @@ EXAMPLES
   Reading configuration from /home/shea/.storyman.json
 ```
 
-_See code: [dist/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1.1.1/dist/commands/info.ts)_
+_See code: [dist/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/info.ts)_
 
 ## `story install [REPO]`
 
@@ -379,15 +382,18 @@ EXAMPLES
   $ story install
 ```
 
-_See code: [dist/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.1.1/dist/commands/install.ts)_
+_See code: [dist/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/install.ts)_
 
-## `story open`
+## `story open [STORY]`
 
 Open the active story in Jira.
 
 ```
 USAGE
-  $ story open
+  $ story open [STORY]
+
+ARGUMENTS
+  STORY  Optionally specify a different story to open, instead of the current story.
 
 DESCRIPTION
   Open the active story in Jira.
@@ -399,7 +405,7 @@ EXAMPLES
   $ story open
 ```
 
-_See code: [dist/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.1.1/dist/commands/open.ts)_
+_See code: [dist/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/open.ts)_
 
 ## `story set STORY [SUBSTORY]`
 
@@ -421,7 +427,7 @@ EXAMPLES
   Current story is now SM-123.
 ```
 
-_See code: [dist/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.1.1/dist/commands/set.ts)_
+_See code: [dist/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/set.ts)_
 
 ## `story uninstall [REPO]`
 
@@ -441,5 +447,5 @@ EXAMPLES
   $ story uninstall
 ```
 
-_See code: [dist/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.1.1/dist/commands/uninstall.ts)_
+_See code: [dist/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/uninstall.ts)_
 <!-- commandsstop -->
