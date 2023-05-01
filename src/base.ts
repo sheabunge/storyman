@@ -5,6 +5,7 @@ import { readFile, writeFile, access } from 'fs/promises'
 import UserConfig from './config'
 import { UserConfigProps } from './types/UserConfigProps'
 import { Story } from './types/Story'
+import { formatStory } from './utils'
 
 export const STORY_FILENAME = '.story'
 export const USER_CONFIG_FILENAME = '.storyman.json'
@@ -30,11 +31,10 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   protected flags!: Flags<T>
 
   protected static userConfigDefaults: UserConfigProps = {
-    jiraUrl: '',
     defaultAuthor: '',
+    jiraUrl: '',
+    projects: '',
     defaultProject: '',
-    requireStory: true,
-    requireAuthor: false
   }
 
   private _storyDir: string | undefined
@@ -97,7 +97,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return writeFile(storyFile, contents)
       .then(() => this.getStory())
       .then(updatedStory =>
-        this.log(`Current story is now ${Object.values(updatedStory).filter(Boolean).join(' ')}.`)
+        this.log(`Current story is now ${formatStory(updatedStory)}.`)
       )
   }
 }
