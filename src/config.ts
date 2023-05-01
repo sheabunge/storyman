@@ -2,9 +2,9 @@ import { readFile, writeFile } from 'fs/promises'
 
 const FALSY_STRINGS = new Set(['0', 'false', 'no'])
 
-const parseJson = <T>(data: string, allowedProperties: Array<keyof T | string>): Partial<T> =>
+const parseJson = <T>(data: string, allowedProperties: Set<keyof T | string>): Partial<T> =>
   (Object.fromEntries(
-    Object.entries(JSON.parse(data)).filter(([prop]) => allowedProperties.includes(prop))
+    Object.entries(JSON.parse(data)).filter(([prop]) => allowedProperties.has(prop))
   ) as Partial<T>)
 
 const parseBoolean = (value: unknown) =>
@@ -13,6 +13,7 @@ const parseBoolean = (value: unknown) =>
 export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   public readonly configFile: string
   public readonly defaults: T
+  public readonly validProps: Set<keyof T | string>
 
   private stored: Partial<T> | undefined
   private dirty: Partial<T>
@@ -20,6 +21,7 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   constructor(configFile: string, defaultValues: T) {
     this.configFile = configFile
     this.defaults = defaultValues
+    this.validProps = new Set(Object.keys(defaultValues))
     this.dirty = {}
   }
 
@@ -28,7 +30,7 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
       Promise.resolve(this.stored) :
       readFile(this.configFile)
         .then(content =>
-          parseJson<T>(content.toString(), Object.keys(this.defaults)))
+          parseJson<T>(content.toString(), this.validProps))
         .catch(() => this.defaults)
         .then(stored => {
           this.stored = stored
