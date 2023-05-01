@@ -5,10 +5,7 @@ import { readFile, writeFile, access } from 'fs/promises'
 import UserConfig from './config'
 import { UserConfigProps } from './types/user-config-props'
 import { Story } from './types/Story'
-import { formatStory } from './utils'
-
-export const STORY_FILENAME = '.story'
-export const USER_CONFIG_FILENAME = '.storyman.json'
+import { formatStory, STORY_FILENAME, USER_CONFIG_FILENAME } from './utils'
 
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<T['flags']>

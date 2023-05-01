@@ -2,7 +2,7 @@ import { mkdtemp, readFile, writeFile, rm, rmdir, access } from 'fs/promises'
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { chdir, cwd } from 'process'
-import { STORY_FILENAME, USER_CONFIG_FILENAME } from '../src/base-command'
+import { STORY_FILENAME, USER_CONFIG_FILENAME } from '../src/utils'
 
 export const createStoryFile = async (story: string) => {
   chdir(await mkdtemp(join(tmpdir(), 'set.test')))
