@@ -7,7 +7,7 @@ const NEW_CHILD_STORY = 'TEST-12'
 
 const setup = async () => createStoryFile(OLD_STORY)
 
-describe('set story with child story', () => {
+describe('set story', () => {
   test
     .do(setup)
     .finally(cleanupStoryFiles)
