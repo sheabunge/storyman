@@ -1,4 +1,4 @@
-import * as fs from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 
 const FALSY_STRINGS = new Set(['0', 'false', 'no'])
 
@@ -26,7 +26,7 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   private read = (): Promise<Partial<T>> =>
     this.stored ?
       Promise.resolve(this.stored) :
-      fs.readFile(this.configFile)
+      readFile(this.configFile)
         .then(content =>
           parseJson<T>(content.toString(), Object.keys(this.defaults)))
         .catch(() => this.defaults)
@@ -72,6 +72,6 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
     this.read().then(stored => {
       this.stored = { ...stored, ...this.dirty }
       this.dirty = {}
-      return fs.writeFile(this.configFile, JSON.stringify(this.stored))
+      return writeFile(this.configFile, JSON.stringify(this.stored, undefined, 2))
     })
 }
