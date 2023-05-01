@@ -1,10 +1,8 @@
-import { Args, Flags } from '@oclif/core'
+import { Flags } from '@oclif/core'
 import { access, writeFile, chmod } from 'fs/promises'
 import { EOL } from 'os'
-import { dirname, join } from 'path'
-import { BaseCommand } from '../base'
-
-const HOOK_FILE = '.git/hooks/prepare-commit-msg'
+import { resolve } from 'path'
+import { InstallCommand } from '../installCommand'
 
 const SH_HOOK = [
   '#!/bin/sh',
@@ -12,21 +10,12 @@ const SH_HOOK = [
   ''
 ].join(EOL)
 
-export default class Install extends BaseCommand<typeof Install> {
+export default class Install extends InstallCommand<typeof Install> {
   static description = 'Install the git `prepare-commit-msg` hook.'
 
   static examples = [
     '$ story install'
   ]
-
-  static args = {
-    repo: Args.directory({
-      description: 'Path to Git repository. Defaults to current directory.',
-      required: false,
-      default: process.cwd(),
-      exists: true
-    })
-  }
 
   static flags = {
     force: Flags.boolean({
@@ -35,16 +24,15 @@ export default class Install extends BaseCommand<typeof Install> {
     })
   }
 
+  static args = {
+    ...InstallCommand.baseArgs
+  }
+
   async run() {
     const { flags, args: { repo } } = await this.parse(Install)
+    const hookFile = await this.getHookFile(repo)
 
-    const hookFile = join(repo, HOOK_FILE)
-
-    await access(dirname(hookFile)).catch(() =>
-      this.error('Current directory does not appear to be a Git repository.')
-    )
-
-    if (await access(hookFile).then(() => true).catch(() => false)) {
+    if (await this.isForeignHookFile(hookFile)) {
       if (flags.force) {
         this.log('A prepare-commit-msg hook appears to already exist. Overriding due to --force flag.')
       } else {
@@ -54,6 +42,6 @@ export default class Install extends BaseCommand<typeof Install> {
 
     await writeFile(hookFile, SH_HOOK)
       .then(() => chmod(hookFile, 0o755))
-      .then(() => this.log(`Created prepare-commit-msg hook for ${repo}.`))
+      .then(() => this.log(`Created prepare-commit-msg hook for ${resolve(repo)}.`))
   }
 }

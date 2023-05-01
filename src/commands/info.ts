@@ -1,4 +1,4 @@
-import { BaseCommand } from '../base'
+import { BaseCommand } from '../baseCommand'
 
 export default class Get extends BaseCommand<typeof Get> {
   static description = 'View information about the current story environment.'
