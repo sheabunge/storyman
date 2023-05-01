@@ -7,7 +7,15 @@ export default class Open extends BaseCommand<typeof Open> {
   static description = 'Open the active story in Jira.'
 
   static examples = [
-    '$ story open'
+    `$ story open
+Opening https://something.atlassian.net/browse/SM-12
+`,
+    `$ story open 42
+Opening https://something.atlassian.net/browse/SM-42
+`,
+    `$ story open TS-19
+Opening https://something.atlassian.net/browse/TS-19
+`
   ]
 
   static aliases = ['jira']
@@ -15,7 +23,7 @@ export default class Open extends BaseCommand<typeof Open> {
   static args = {
     story: Args.string({
       required: false,
-      description: 'Optionally specify a different story to open, instead of the current story.'
+      description: 'Open this story, instead of the current story.'
     })
   }
 
