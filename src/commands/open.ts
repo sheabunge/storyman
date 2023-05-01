@@ -1,6 +1,6 @@
 import { ux } from '@oclif/core'
+import * as open from 'open'
 import { BaseCommand } from '../base'
-import open from 'open'
 import { trimTrailingSlash } from '../utils'
 
 export default class Open extends BaseCommand<typeof Open> {
@@ -15,18 +15,21 @@ export default class Open extends BaseCommand<typeof Open> {
   private getBaseUrl = async () => {
     let url = await (await this.userConfig).get('jiraUrl')
 
+    /* eslint-disable no-await-in-loop */
     while (!url) {
-      url = await ux.prompt('What is your Jira site URL?')
+      url = await ux.prompt('What is your Jira site URL?', { required: true })
 
-      if (!url.toLowerCase().startsWith('http')) {
+      if (!url || !url.toLowerCase().startsWith('http')) {
         this.warn("That doesn't appear to be a valid URL.")
         url = ''
-      } else {
-        const userConfig = await this.userConfig
-        userConfig.set('jiraUrl', url)
-        await userConfig.write()
+        continue
       }
+
+      const userConfig = await this.userConfig
+      userConfig.set('jiraUrl', url)
+      await userConfig.write()
     }
+    /* eslint-enable no-await-in-loop */
 
     return url
   }
