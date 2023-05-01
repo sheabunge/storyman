@@ -3,17 +3,15 @@ import { EOL } from 'os'
 import { BaseCommand } from '../../base-command'
 import { Args } from '@oclif/core'
 import { Story } from '../../types/story'
-import { formatStory } from '../../utils'
+import { formatStory, splitStory } from '../../utils'
 
 const PREFIX = '[storyman]'
 const VALID_SOURCES = new Set(['message', 'commit'])
 const AUTHOR_RE = /\[(?<author>.+)]\s*^/m
 
-const splitStory = (story: string) => story.split('-', 1)
-
 export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMsg> {
   static hidden = true
-
+  static strict = false
   static aliases = ['prepare-commit-msg', 'prepare-commit-message']
 
   static args = {
@@ -75,11 +73,7 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     const storyTag = await this.getStoryTag(story, commitMessage)
     const authorTag = await this.getAuthorTag(commitMessage)
 
-    this.debug(`${PREFIX} Story tag: ${storyTag}`)
-    this.debug(`${PREFIX} Author tag: ${storyTag}`)
-
     if (!storyTag && !authorTag) {
-      // Commit is fine, nothing to alter.
       this.exit(0)
     }
 
