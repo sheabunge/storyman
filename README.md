@@ -1,7 +1,7 @@
 storyman
 ========
 
-When using project-tracking tools such as Jira, it can be useful to include a story tag (such as EX-123) in commit
+When using project-tracking tools such as Jira, it can be useful to include a story tag (such as EG-123) in commit
 messages, so that changes can be linked to stories and vice-versa.
 
 However, doing so manually can quickly become tiresome, and it's incredibly easy to forget to include a story tag, or
@@ -52,22 +52,22 @@ Now you're ready to use storyman!
 When working on a new story, or switching between stories, use the `story set` command:
 
 ```sh-session
-$ story set EX-123
-Current story is now EX-123.
+$ story set EG-123
+Current story is now EG-123.
 ```
 
 You can always check what the current story is using `story`:
 
 ```sh-session
 $ story
-EX-123
+EG-123
 ```
 
 When making a commit, storyman will automatically add the current story tag to the beginning of the commit message:
 
 ```sh-session
 $ git commit -m "Made some changes."
-[master fb98b25] EX-123 Made some changes.
+[master fb98b25] EG-123 Made some changes.
  1 file changed, 71 insertions(+), 3 deletions(-)
 ```
 
@@ -75,7 +75,7 @@ You can also use the `story` command when creating branches:
 
 ```sh-session
 git checkout -b $(story)-fixes
-Switched to a new branch 'EX-123-fixes'
+Switched to a new branch 'EG-123-fixes'
 ```
 
 ## Default project
@@ -85,20 +85,20 @@ changing stories, so all you need to provide is the story number:
 
 ```sh-session
 $ story set 12
-Current story is now EX-12.
+Current story is now EG-12.
 ```
 
 To enable this functionality, set the `defaultProject` configuration property:
 
 ```sh-session
-$ story set config defaultProject EX
+$ story set config defaultProject EG
 ```
 
 With this enabled, it's still possible to switch to stories from different projects, as long as the full story tag
 is specified:
 
 ```sh-session
-$ story set config defaultProject EX
+$ story set config defaultProject EG
 $ story set SM-142
 Current story is now SM-142.
 ```
@@ -108,7 +108,7 @@ Current story is now SM-142.
 Storyman also supports workflows that involve also including the name of the commit authors in each message,
 like this:
 
-    EX-12 Made some changes. [Shea]
+    EG-12 Made some changes. [Shea]
 
 To enable this functionality, set the `defaultAuthor` configuration property:
 
@@ -135,11 +135,11 @@ This is to ensure that only valid project keys are recognised as stories, instea
 format. Here's an example of how this works:
 
 ```sh-session
-$ story config set projects "EX SM ABC SHEA"
+$ story config set projects "EG SM ABC SHEA"
 $ story set SM-123
-$ git commit -m "EX-12 Made some changes."
-Commit message already mentions story EX-12.
-[master bf406096] EX-12 Made some changes.
+$ git commit -m "EG-12 Made some changes."
+Commit message already mentions story EG-12.
+[master bf406096] EG-12 Made some changes.
  1 file changed, 1 insertion(+), 1 deletion(-)
 ```
 
@@ -155,7 +155,7 @@ self-hosted instance:
 ```sh-session
 $ story open
 What is your Jira site URL?: https://something.atlassian.net/
-Opening https://something.atlassian.net/browse/EX-12
+Opening https://something.atlassian.net/browse/EG-12
 ```
 
 ## Sub-stories
@@ -164,22 +164,22 @@ When working with sub-stories or child stories, storyman is able to recognise an
 numbers. Simply specify both when using `set story`:
 
 ```sh-session
-$ story set EX-12 EX-20
-Current story is now EX-12 EX-20.
+$ story set EG-12 EG-20
+Current story is now EG-12 EG-20.
 ```
 
 For convenience when working with branches, the basic `story` command will only output the parent story
 
 ```sh-session
 $ git checkout $(story)-fixes
-Switched to branch 'EX-12-fixes'
+Switched to branch 'EG-12-fixes'
 ```
 
 Both stories will be included in commit messages, and can be retrieved by passing the `--full` flag to `story get`:
 
 ```sh-session
 $ story get --full
-EX-12 EX-20
+EG-12 EG-20
 ```
 
 ## Repository-specific stories
