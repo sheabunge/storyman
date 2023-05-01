@@ -1,11 +1,15 @@
-import { Hook } from '@oclif/core/lib/interfaces'
+import { Hook } from '@oclif/core'
 import Get from '../commands/get'
 import notFoundHook from '@oclif/plugin-not-found'
 
-const hook: Hook.CommandNotFound = async function(this, options) {
-  return !options.argv || options.argv.every(arg => arg.startsWith('-')) ?
-    Get.run(options.argv) :
-    notFoundHook.call(this, options)
+const hook: Hook.CommandNotFound = function(this, { argv, config }) {
+  return !argv || argv.every(arg => arg.startsWith('-')) ?
+    Get.run(argv) :
+    notFoundHook.call(this, {
+      config,
+      id: argv.slice(0, 2).join(' '),
+      argv: argv.slice(2)
+    })
 }
 
 export default hook
