@@ -11,8 +11,8 @@ const parseBoolean = (value: unknown) =>
   value && !('string' === typeof value && FALSY_STRINGS.has(value.toLowerCase()))
 
 export default class UserConfig<T extends { [P in keyof T]: unknown }> {
-  private readonly configFile: string
-  private readonly defaults: T
+  public readonly configFile: string
+  public readonly defaults: T
 
   private stored: Partial<T> | undefined
   private dirty: Partial<T>
