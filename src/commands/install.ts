@@ -1,8 +1,8 @@
 import { Flags } from '@oclif/core'
-import { access, writeFile, chmod } from 'fs/promises'
+import { writeFile, chmod } from 'fs/promises'
 import { EOL } from 'os'
 import { resolve } from 'path'
-import { InstallCommand } from '../installCommand'
+import { InstallCommand } from '../install-command'
 
 const SH_HOOK = [
   '#!/bin/sh',

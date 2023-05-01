@@ -1,4 +1,4 @@
-import { BaseCommand } from '../baseCommand'
+import { BaseCommand } from '../base-command'
 import { Flags } from '@oclif/core'
 
 export default class Get extends BaseCommand<typeof Get> {

@@ -1,7 +1,7 @@
 import { Args, Command } from '@oclif/core'
 import { access, readFile } from 'fs/promises'
 import { dirname, join, resolve } from 'path'
-import { BaseCommand } from './baseCommand'
+import { BaseCommand } from './base-command'
 
 const HOOK_FILE = '.git/hooks/prepare-commit-msg'
 
