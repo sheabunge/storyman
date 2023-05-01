@@ -40,6 +40,7 @@
     "plugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-not-found",
+      "@oclif/plugin-autocomplete",
       "@oclif/plugin-warn-if-update-available"
     ],
     "topicSeparator": " ",
@@ -57,6 +58,7 @@
     "open": "^v8.4.2"
   },
   "devDependencies": {
+    "@oclif/plugin-autocomplete": "^2.1.9",
     "@oclif/test": "^2.3.17",
     "@types/chai": "^4",
     "@types/mocha": "^9.0.0",

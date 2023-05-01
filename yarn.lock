@@ -494,6 +494,16 @@
     "wordwrap" "^1.0.0"
     "wrap-ansi" "^7.0.0"
 
+"@oclif/plugin-autocomplete@^2.1.9":
+  "integrity" "sha512-Fx3YTb1tZJUZXlWw41HOCTJnrE58Qiyta7PxKzqlCl7TxFPHst1lxIdNo+93Kqc3StWc6+zOEHnqNLHsu/+HrA=="
+  "resolved" "https://registry.npmjs.org/@oclif/plugin-autocomplete/-/plugin-autocomplete-2.1.9.tgz"
+  "version" "2.1.9"
+  dependencies:
+    "@oclif/core" "^2.8.2"
+    "chalk" "^4.1.0"
+    "debug" "^4.3.4"
+    "fs-extra" "^9.0.1"
+
 "@oclif/plugin-help@^5", "@oclif/plugin-help@^5.1.19":
   "integrity" "sha512-0J3oowPURZJ4Dn1p1WpQ46E4+CoV20KTn1cvsNiDl6Hmbw+qoljKQnArJJzNFeZQxWo4R7/S42PrzKJTVYh68Q=="
   "resolved" "https://registry.npmjs.org/@oclif/plugin-help/-/plugin-help-5.2.9.tgz"
