@@ -1,5 +1,5 @@
 import { Args } from '@oclif/core'
-import { BaseCommand } from '../../base-command'
+import { BaseCommand } from '../../base'
 
 export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
   static description = 'Set a new value for a configuration property.'

@@ -1,5 +1,5 @@
 import { Args } from '@oclif/core'
-import { BaseCommand } from '../../base-command'
+import { BaseCommand } from '../../base'
 
 export default class ConfigUnset extends BaseCommand<typeof ConfigUnset> {
   static description = 'Reset a configuration property to its default value.'

@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'fs/promises'
 import { EOL } from 'os'
-import { BaseCommand } from '../../base-command'
+import { BaseCommand } from '../../base'
 import { Args } from '@oclif/core'
 import { Story } from '../../types/story'
 import { formatStory, splitStory } from '../../utils'

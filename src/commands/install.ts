@@ -2,7 +2,7 @@ import { Flags } from '@oclif/core'
 import { writeFile, chmod } from 'fs/promises'
 import { EOL } from 'os'
 import { resolve } from 'path'
-import { InstallCommand } from '../install-command'
+import { BaseInstallCommand } from '../base-install'
 
 const SH_HOOK = [
   '#!/bin/sh',
@@ -10,7 +10,7 @@ const SH_HOOK = [
   ''
 ].join(EOL)
 
-export default class Install extends InstallCommand<typeof Install> {
+export default class Install extends BaseInstallCommand<typeof Install> {
   static summary = 'Install the git prepare-commit-msg hook.'
   static description = 'Install the git `prepare-commit-msg` hook.'
 
@@ -31,7 +31,7 @@ Created prepare-commit-msg hook for /home/shea/projects/another-project.
   }
 
   static args = {
-    ...InstallCommand.baseArgs
+    ...BaseInstallCommand.baseArgs
   }
 
   async run() {

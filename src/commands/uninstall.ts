@@ -1,8 +1,8 @@
 import { rm } from 'fs/promises'
 import { resolve } from 'path'
-import { InstallCommand } from '../install-command'
+import { BaseInstallCommand } from '../base-install'
 
-export default class Uninstall extends InstallCommand<typeof Uninstall> {
+export default class Uninstall extends BaseInstallCommand<typeof Uninstall> {
   static summary = 'Uninstall the git prepare-commit-msg hook.'
   static description = 'Uninstall the git `prepare-commit-msg` hook.'
 
@@ -16,7 +16,7 @@ Removed prepare-commit-msg hook from /home/shea/projects/another-project.
   ]
 
   static args = {
-    ...InstallCommand.baseArgs
+    ...BaseInstallCommand.baseArgs
   }
 
   async run() {

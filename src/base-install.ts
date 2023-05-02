@@ -1,18 +1,18 @@
 import { Args, Command } from '@oclif/core'
 import { access, readFile } from 'fs/promises'
 import { dirname, join, resolve } from 'path'
-import { BaseCommand } from './base-command'
+import { BaseCommand } from './base'
 
 const HOOK_FILE = '.git/hooks/prepare-commit-msg'
 
 const STORY_HOOK_RE = /^story\b/m
 
-export abstract class InstallCommand<T extends typeof Command> extends BaseCommand<T> {
+export abstract class BaseInstallCommand<T extends typeof Command> extends BaseCommand<T> {
   static baseArgs = {
     repo: Args.directory({
       description: 'Path to Git repository. Defaults to current directory.',
       required: false,
-      default: './',
+      default: '.',
       exists: true
     })
   }
