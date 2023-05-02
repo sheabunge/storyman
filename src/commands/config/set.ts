@@ -5,7 +5,9 @@ export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
   static description = 'Set a new value for a configuration property.'
 
   static examples = [
-    '$ story config set defaultProject SM'
+    `$ story config set defaultProject SM
+defaultProject = SM
+`
   ]
 
   static aliases = ['config:s']

@@ -5,6 +5,15 @@ export default class ConfigIndex extends BaseCommand<typeof ConfigIndex> {
 
   static aliases = ['config:list', 'config:l']
 
+  static examples = [
+    `$ story config
+defaultAuthor = "Shea"
+defaultProject = "SM"
+jiraUrl = "https://something.atlassian.net/"
+projects = "SM EG ETC"
+`
+  ]
+
   async run() {
     const userConfig = await this.userConfig
 

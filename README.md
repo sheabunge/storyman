@@ -250,6 +250,13 @@ DESCRIPTION
 ALIASES
   $ story config list
   $ story config l
+
+EXAMPLES
+  $ story config
+  defaultAuthor = "Shea"
+  defaultProject = "SM"
+  jiraUrl = "https://something.atlassian.net/"
+  projects = "SM EG ETC"
 ```
 
 _See code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/src/commands/config/index.ts)_
@@ -270,6 +277,7 @@ ALIASES
 
 EXAMPLES
   $ story config set defaultProject SM
+  defaultProject = SM
 ```
 
 ## `story config unset PROP`
@@ -314,7 +322,10 @@ ALIASES
 
 EXAMPLES
   $ story
-  SM-123
+  SM-12
+
+  $ story -f
+  SM-12 SM-34
 ```
 
 _See code: [src/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/src/commands/get.ts)_
@@ -354,6 +365,7 @@ EXAMPLES
   $ story info
   Current story is SM-123
   Current child story is SM-134
+   
   Reading story from /home/shea/.story
   Reading configuration from /home/shea/.storyman.json
 ```
@@ -435,8 +447,11 @@ DESCRIPTION
   Set the active story.
 
 EXAMPLES
-  $ story set SM-123
-  Current story is now SM-123.
+  $ story set SM-12
+  Current story is now SM-12.
+
+  $ story set SM-12 SM-34
+  Current story is now SM-12 SM-34.
 ```
 
 _See code: [src/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/src/commands/set.ts)_
@@ -459,6 +474,10 @@ DESCRIPTION
 
 EXAMPLES
   $ story uninstall
+  Removed prepare-commit-msg hook from /home/shea/projects/some-project.
+
+  $ story uninstall ~/projects/another-project
+  Removed prepare-commit-msg hook from /home/shea/projects/another-project.
 ```
 
 _See code: [src/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/src/commands/uninstall.ts)_

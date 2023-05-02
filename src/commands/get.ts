@@ -5,7 +5,8 @@ export default class Get extends BaseCommand<typeof Get> {
   static description = 'Retrieve the current story identifier.'
 
   static examples = [
-    '$ story\nSM-123\n'
+    '$ story\nSM-12\n',
+    '$ story -f\nSM-12 SM-34\n'
   ]
 
   static flags = {

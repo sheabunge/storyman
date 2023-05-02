@@ -7,7 +7,7 @@ export default class Get extends BaseCommand<typeof Get> {
     `$ story info
 Current story is SM-123
 Current child story is SM-134
-
+   
 Reading story from /home/shea/.story
 Reading configuration from /home/shea/.storyman.json
 `

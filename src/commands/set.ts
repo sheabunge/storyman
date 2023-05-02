@@ -5,8 +5,11 @@ export default class Set extends BaseCommand<typeof Set> {
   static description = 'Set the active story.'
 
   static examples = [
-    `$ story set SM-123
-Current story is now SM-123.
+    `$ story set SM-12
+Current story is now SM-12.
+`,
+    `$ story set SM-12 SM-34
+Current story is now SM-12 SM-34.
 `
   ]
 

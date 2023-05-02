@@ -7,7 +7,12 @@ export default class Uninstall extends InstallCommand<typeof Uninstall> {
   static description = 'Uninstall the git `prepare-commit-msg` hook.'
 
   static examples = [
-    '$ story uninstall'
+    `$ story uninstall
+Removed prepare-commit-msg hook from /home/shea/projects/some-project.
+`,
+    `$ story uninstall ~/projects/another-project
+Removed prepare-commit-msg hook from /home/shea/projects/another-project.
+`
   ]
 
   static args = {
