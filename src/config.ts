@@ -7,8 +7,8 @@ const parseJson = <T>(data: string, allowedProperties: Set<keyof T | string>): P
     Object.entries(JSON.parse(data)).filter(([prop]) => allowedProperties.has(prop))
   ) as Partial<T>)
 
-const parseBoolean = (value: unknown) =>
-  value && !('string' === typeof value && FALSY_STRINGS.has(value.toLowerCase()))
+const parseBoolean = (value: unknown): boolean =>
+  Boolean(value) && !('string' === typeof value && FALSY_STRINGS.has(value.toLowerCase()))
 
 export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   public readonly configFile: string
@@ -51,12 +51,19 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
       this.dirty[prop] ?? stored[prop] ?? this.defaults[prop]
     )
 
-  set = <K extends keyof T>(prop: K, value: T[K]): T[K] => {
-    const actualValue =
-      'boolean' === typeof this.defaults[prop] ? parseBoolean(value) as T[K] :
-        'number' === typeof this.defaults[prop] ? Number(value) as T[K] :
-          value
+  private parseValue = <K extends keyof T>(prop: K, value: T[K]): T[K] => {
+    switch (typeof this.defaults[prop]) {
+    case 'boolean':
+      return parseBoolean(value) as T[K]
+    case 'number':
+      return Number(value) as T[K]
+    default:
+      return value
+    }
+  }
 
+  set = <K extends keyof T>(prop: K, value: T[K]): T[K] => {
+    const actualValue = this.parseValue(prop, value)
     this.dirty[prop] = actualValue
     return actualValue
   }
@@ -67,8 +74,8 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
       delete this.dirty[prop]
     })
 
-  isValid = (prop: PropertyKey): prop is keyof T =>
-    prop in this.defaults
+  isValid = (prop: string | keyof T): prop is keyof T =>
+    this.validProps.has(prop)
 
   write = (): Promise<void> =>
     this.read().then(stored => {
