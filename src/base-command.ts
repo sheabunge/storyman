@@ -29,9 +29,9 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
 
   protected static userConfigDefaults: UserConfigProps = {
     defaultAuthor: '',
+    defaultProject: '',
     jiraUrl: '',
-    projects: '',
-    defaultProject: ''
+    projects: ''
   }
 
   private _storyDir: string | undefined
