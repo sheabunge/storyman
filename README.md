@@ -234,7 +234,7 @@ EXAMPLES
   $ story autocomplete --refresh-cache
 ```
 
-_See code: [dist/commands/autocomplete.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/autocomplete.ts)_
+_See code: [dist/commands/autocomplete.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/dist/commands/autocomplete.ts)_
 
 ## `story config`
 
@@ -252,7 +252,7 @@ ALIASES
   $ story config l
 ```
 
-_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/config/index.ts)_
+_See code: [dist/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/dist/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
@@ -317,7 +317,7 @@ EXAMPLES
   SM-123
 ```
 
-_See code: [dist/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/get.ts)_
+_See code: [dist/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/dist/commands/get.ts)_
 
 ## `story help [COMMANDS]`
 
@@ -358,7 +358,7 @@ EXAMPLES
   Reading configuration from /home/shea/.storyman.json
 ```
 
-_See code: [dist/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/info.ts)_
+_See code: [dist/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/dist/commands/info.ts)_
 
 ## `story install [REPO]`
 
@@ -387,7 +387,7 @@ EXAMPLES
   Created prepare-commit-msg hook for /home/shea/projects/another-project.
 ```
 
-_See code: [dist/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/install.ts)_
+_See code: [dist/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/dist/commands/install.ts)_
 
 ## `story open [STORY]`
 
@@ -417,7 +417,7 @@ EXAMPLES
   Opening https://something.atlassian.net/browse/TS-19
 ```
 
-_See code: [dist/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/open.ts)_
+_See code: [dist/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/dist/commands/open.ts)_
 
 ## `story set STORY [SUBSTORY]`
 
@@ -439,7 +439,7 @@ EXAMPLES
   Current story is now SM-123.
 ```
 
-_See code: [dist/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/set.ts)_
+_See code: [dist/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/dist/commands/set.ts)_
 
 ## `story uninstall [REPO]`
 
@@ -461,5 +461,5 @@ EXAMPLES
   $ story uninstall
 ```
 
-_See code: [dist/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.1.2/dist/commands/uninstall.ts)_
+_See code: [dist/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.2.0/dist/commands/uninstall.ts)_
 <!-- commandsstop -->
