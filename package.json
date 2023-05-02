@@ -11,11 +11,11 @@
     "jira",
     "oclif"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "/bin",
-    "/dist",
+    "/lib",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
@@ -23,8 +23,8 @@
     "story": "./bin/run"
   },
   "scripts": {
-    "build": "shx rm -rf dist && tsc -b",
-    "watch": "shx rm -rf dist && tsc -b --watch",
+    "build": "shx rm -rf lib && tsc -b",
+    "watch": "shx rm -rf lib && tsc -b --watch",
     "lint": "eslint . --ext .ts --config .eslintrc.js",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm run lint",
@@ -36,7 +36,7 @@
   "oclif": {
     "bin": "story",
     "dirname": "story",
-    "commands": "./dist/commands",
+    "commands": "./lib/commands",
     "default": "index",
     "plugins": [
       "@oclif/plugin-help",
@@ -50,7 +50,7 @@
       }
     },
     "hooks": {
-      "command_not_found": "./dist/hooks/not-found"
+      "command_not_found": "./lib/hooks/not-found"
     }
   },
   "dependencies": {
