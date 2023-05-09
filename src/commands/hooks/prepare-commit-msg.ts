@@ -20,32 +20,36 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     commitSHA1: Args.string()
   }
 
-  private async buildStoryRegExp(story: Story) {
+  private async buildStoryRegExp(story: Story | undefined) {
     const userConfig = await this.userConfig
     const projects = new Set((await userConfig.get('projects')).split(/\W+/))
 
     const defaultProject = await userConfig.get('defaultProject')
     projects.add(defaultProject)
 
-    const [parentProject] = splitStory(story.parent)
-    projects.add(parentProject)
+    if (story) {
+      const [parentProject] = splitStory(story.parent)
+      projects.add(parentProject)
 
-    if (story.child) {
-      const [childProject] = splitStory(story.child)
-      projects.add(childProject)
+      if (story.child) {
+        const [childProject] = splitStory(story.child)
+        projects.add(childProject)
+      }
     }
 
     const projectTags = [...projects.values()].filter(Boolean).join('|')
     return new RegExp(`(?:${projectTags})-\\d+`)
   }
 
-  private async getStoryTag(story: Story, commitMessage: string): Promise<string | undefined> {
+  private async getStoryTag(story: Story | undefined, commitMessage: string): Promise<string | undefined> {
     const existingTag = commitMessage.match(await this.buildStoryRegExp(story))
 
     if (existingTag) {
       this.log(`${PREFIX} Commit message already mentions story ${existingTag[0]}.`)
-    } else {
+    } else if (story) {
       return `${formatStory(story)} `
+    } else {
+      this.warn(`${PREFIX} Commit does not contain story tag.`)
     }
   }
 
@@ -71,12 +75,8 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     const story = await this.getStory()
     const commitMessage = (await readFile(commitMessageFile)).toString()
 
-    const storyTag = story ? await this.getStoryTag(story, commitMessage) : undefined
+    const storyTag = await this.getStoryTag(story, commitMessage)
     const authorTag = await this.getAuthorTag(commitMessage)
-
-    if (!story && !storyTag) {
-      this.warn(`${PREFIX} Commit does not contain story tag.`)
-    }
 
     if (!storyTag && !authorTag) {
       this.exit(0)
