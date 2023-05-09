@@ -35,14 +35,15 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
       projects.add(childProject)
     }
 
-    return new RegExp(`/(?:${[...projects.values()].join('|')})-\\d+/`)
+    const projectTags = [...projects.values()].filter(Boolean).join('|')
+    return new RegExp(`(?:${projectTags})-\\d+`)
   }
 
   private async getStoryTag(story: Story, commitMessage: string): Promise<string | undefined> {
     const existingTag = commitMessage.match(await this.buildStoryRegExp(story))
 
-    if (existingTag?.groups) {
-      this.log(`${PREFIX} Commit message already mentions story ${existingTag.groups[0]}.`)
+    if (existingTag) {
+      this.log(`${PREFIX} Commit message already mentions story ${existingTag[0]}.`)
     } else {
       return `${formatStory(story)} `
     }
