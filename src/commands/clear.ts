@@ -5,7 +5,7 @@ export default class Clear extends BaseCommand<typeof Clear> {
   static description = 'Reset the current story identifier.'
 
   static examples = [
-    '$ story clear\n'
+    '$ story clear\nCurrent story has been cleared, was EG-11.'
   ]
 
   static aliases = ['unset', 'reset']
