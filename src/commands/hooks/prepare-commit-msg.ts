@@ -74,6 +74,10 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     const storyTag = story ? await this.getStoryTag(story, commitMessage) : undefined
     const authorTag = await this.getAuthorTag(commitMessage)
 
+    if (!story && !storyTag) {
+      this.warn(`${PREFIX} Commit does not contain story tag.`)
+    }
+
     if (!storyTag && !authorTag) {
       this.exit(0)
     }
