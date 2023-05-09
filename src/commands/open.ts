@@ -53,17 +53,17 @@ Opening https://something.atlassian.net/browse/TS-19
     const { args: { story: storyOverride } } = await this.parse(Open)
     const baseUrl = await this.getBaseUrl()
 
-    const story = await (async (): Promise<string> => {
+    const story = await (async (): Promise<string | undefined> => {
       if (storyOverride) {
         const defaultProject = await (await this.userConfig).get('defaultProject')
         return prefixStory(defaultProject, storyOverride)
       }
 
       const story = await this.getStory()
-      return story.child ?? story.parent
+      return story?.child ?? story?.parent
     })()
 
-    const url = `${trimTrailingSlash(baseUrl)}/browse/${story}`
+    const url = story ? `${trimTrailingSlash(baseUrl)}/browse/${story}` : baseUrl
 
     this.log(`Opening ${url}`)
     await open(url)

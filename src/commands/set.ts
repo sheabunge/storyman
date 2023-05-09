@@ -1,5 +1,6 @@
 import { Args } from '@oclif/core'
 import { BaseCommand } from '../base'
+import { formatStory } from '../utils'
 
 export default class Set extends BaseCommand<typeof Set> {
   static description = 'Set the active story.'
@@ -26,5 +27,9 @@ Current story is now SM-12 SM-34.
   async run() {
     const { args: { story: parent, subStory: child } } = await this.parse(Set)
     await this.setStory({ parent, child })
+      .then(() => this.getStory())
+      .then(updatedStory =>
+        this.log(`Current story is now ${formatStory(updatedStory)}.`)
+      )
   }
 }

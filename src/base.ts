@@ -73,24 +73,25 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
       })
   }
 
-  getStory = (): Promise<Story> =>
+  getStory = (): Promise<Story | undefined> =>
     this.storyFile.then(storyFile =>
       readFile(storyFile, 'utf8')
         .then(contents => {
           const [parent, child] = contents.trim().split(/\s+/)
-          return <Story> { parent, child }
+
+          return parent ? <Story> { parent, child } : undefined
         })
         .catch(() =>
           this.error('Could not find story file.')))
 
+  clearStory = async () => {
+    const storyFile = await this.storyFile
+    return writeFile(storyFile, '')
+  }
+
   setStory = async (story: Story) => {
     const storyFile = await this.storyFile
     const defaultProject = await (await this.userConfig).get('defaultProject')
-
     return writeFile(storyFile, formatStory(story, defaultProject))
-      .then(() => this.getStory())
-      .then(updatedStory =>
-        this.log(`Current story is now ${formatStory(updatedStory)}.`)
-      )
   }
 }

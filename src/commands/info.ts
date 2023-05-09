@@ -14,14 +14,14 @@ Reading configuration from /home/shea/.storyman.json
   ]
 
   async run() {
-    const { parent, child } = await this.getStory()
+    const story = await this.getStory()
     const storyFile = await this.storyFile
     const userConfig = await this.userConfig
 
-    this.log(`Current story is ${parent}`)
+    this.log(`Current story is ${story?.parent ?? 'not set.'}`)
 
-    if (child) {
-      this.log(`Current child story is ${child}`)
+    if (story?.child) {
+      this.log(`Current child story is ${story.child}`)
     }
 
     this.log()

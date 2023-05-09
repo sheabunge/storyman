@@ -1,5 +1,6 @@
 import { BaseCommand } from '../base'
 import { Flags } from '@oclif/core'
+import { formatStory } from '../utils'
 
 export default class Get extends BaseCommand<typeof Get> {
   static description = 'Retrieve the current story identifier.'
@@ -20,8 +21,11 @@ export default class Get extends BaseCommand<typeof Get> {
 
   async run() {
     const { flags } = await this.parse(Get)
-    const { parent, child } = await this.getStory()
+    const story = await this.getStory()
 
-    this.log(`${parent} ${flags.full ? child : ''}`.trim())
+    this.log(story ?
+      formatStory({ parent: story.parent, child: flags.full ? story.child : undefined }) :
+      ''
+    )
   }
 }
