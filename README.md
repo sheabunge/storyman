@@ -196,6 +196,7 @@ properties that can be altered with the `story config` commands.
 
 <!-- commands -->
 * [`story autocomplete [SHELL]`](#story-autocomplete-shell)
+* [`story clear`](#story-clear)
 * [`story config`](#story-config)
 * [`story config set PROP VALUE`](#story-config-set-prop-value)
 * [`story config unset PROP`](#story-config-unset-prop)
@@ -234,7 +235,28 @@ EXAMPLES
   $ story autocomplete --refresh-cache
 ```
 
-_See code: [src/commands/autocomplete.ts](https://github.com/sheabunge/storyman/blob/v1.3.0/src/commands/autocomplete.ts)_
+_See code: [src/commands/autocomplete.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/autocomplete.ts)_
+
+## `story clear`
+
+Reset the current story identifier.
+
+```
+USAGE
+  $ story clear
+
+DESCRIPTION
+  Reset the current story identifier.
+
+ALIASES
+  $ story unset
+  $ story reset
+
+EXAMPLES
+  $ story clear
+```
+
+_See code: [src/commands/clear.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/clear.ts)_
 
 ## `story config`
 
@@ -259,7 +281,7 @@ EXAMPLES
   projects = "SM EG ETC"
 ```
 
-_See code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.3.0/src/commands/config/index.ts)_
+_See code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/config/index.ts)_
 
 ## `story config set PROP VALUE`
 
@@ -328,7 +350,7 @@ EXAMPLES
   SM-12 SM-34
 ```
 
-_See code: [src/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.3.0/src/commands/get.ts)_
+_See code: [src/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/get.ts)_
 
 ## `story help [COMMANDS]`
 
@@ -370,7 +392,7 @@ EXAMPLES
   Reading configuration from /home/shea/.storyman.json
 ```
 
-_See code: [src/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1.3.0/src/commands/info.ts)_
+_See code: [src/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/info.ts)_
 
 ## `story install [REPO]`
 
@@ -399,7 +421,7 @@ EXAMPLES
   Created prepare-commit-msg hook for /home/shea/projects/another-project.
 ```
 
-_See code: [src/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.3.0/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/install.ts)_
 
 ## `story open [STORY]`
 
@@ -429,7 +451,7 @@ EXAMPLES
   Opening https://something.atlassian.net/browse/TS-19
 ```
 
-_See code: [src/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.3.0/src/commands/open.ts)_
+_See code: [src/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/open.ts)_
 
 ## `story set STORY [SUBSTORY]`
 
@@ -454,7 +476,7 @@ EXAMPLES
   Current story is now SM-12 SM-34.
 ```
 
-_See code: [src/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.3.0/src/commands/set.ts)_
+_See code: [src/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/set.ts)_
 
 ## `story uninstall [REPO]`
 
@@ -480,5 +502,5 @@ EXAMPLES
   Removed prepare-commit-msg hook from /home/shea/projects/another-project.
 ```
 
-_See code: [src/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.3.0/src/commands/uninstall.ts)_
+_See code: [src/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/uninstall.ts)_
 <!-- commandsstop -->
