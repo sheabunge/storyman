@@ -75,14 +75,14 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     const story = await this.getStory()
     const commitMessage = (await readFile(commitMessageFile)).toString()
 
-    const storyTag = await this.getStoryTag(story, commitMessage)
+    const [messageHead, ...messageBody] = commitMessage.split(EOL)
+
+    const storyTag = await this.getStoryTag(story, messageHead)
     const authorTag = await this.getAuthorTag(commitMessage)
 
     if (!storyTag && !authorTag) {
       this.exit(0)
     }
-
-    const [messageHead, ...messageBody] = commitMessage.split(EOL)
 
     await writeFile(
       commitMessageFile,
