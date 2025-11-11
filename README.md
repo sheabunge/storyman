@@ -97,17 +97,336 @@ Opening https://something.atlassian.net/browse/EG-12
 # Command Reference
 
 <!-- commands -->
+* [`story`](#story)
+* [`story config`](#story-config)
+* [`story config clear PROP`](#story-config-clear-prop)
+* [`story config d PROP`](#story-config-d-prop)
+* [`story config del PROP`](#story-config-del-prop)
+* [`story config delete PROP`](#story-config-delete-prop)
+* [`story config l`](#story-config-l)
+* [`story config list`](#story-config-list)
+* [`story config remove PROP`](#story-config-remove-prop)
+* [`story config rm PROP`](#story-config-rm-prop)
+* [`story config s PROP VALUE`](#story-config-s-prop-value)
+* [`story config set PROP VALUE`](#story-config-set-prop-value)
+* [`story config unset PROP`](#story-config-unset-prop)
+* [`story get`](#story-get)
 * [`story help [COMMAND]`](#story-help-command)
-* [`story plugins`](#story-plugins)
-* [`story plugins add PLUGIN`](#story-plugins-add-plugin)
-* [`story plugins:inspect PLUGIN...`](#story-pluginsinspect-plugin)
-* [`story plugins install PLUGIN`](#story-plugins-install-plugin)
-* [`story plugins link PATH`](#story-plugins-link-path)
-* [`story plugins remove [PLUGIN]`](#story-plugins-remove-plugin)
-* [`story plugins reset`](#story-plugins-reset)
-* [`story plugins uninstall [PLUGIN]`](#story-plugins-uninstall-plugin)
-* [`story plugins unlink [PLUGIN]`](#story-plugins-unlink-plugin)
-* [`story plugins update`](#story-plugins-update)
+* [`story info`](#story-info)
+* [`story install [REPO]`](#story-install-repo)
+* [`story jira [STORY]`](#story-jira-story)
+* [`story open [STORY]`](#story-open-story)
+* [`story prepare-commit-message COMMITMESSAGEFILE [COMMITSOURCE] [COMMITSHA1]`](#story-prepare-commit-message-commitmessagefile-commitsource-commitsha1)
+* [`story prepare-commit-msg COMMITMESSAGEFILE [COMMITSOURCE] [COMMITSHA1]`](#story-prepare-commit-msg-commitmessagefile-commitsource-commitsha1)
+* [`story uninstall [REPO]`](#story-uninstall-repo)
+
+## `story`
+
+Retrieve the story identifier from the current Git branch.
+
+```
+USAGE
+  $ story
+
+DESCRIPTION
+  Retrieve the story identifier from the current Git branch.
+
+ALIASES
+  $ story 
+
+EXAMPLES
+  $ story
+  SM-12
+```
+
+## `story config`
+
+Display the list of current configuration properties.
+
+```
+USAGE
+  $ story config
+
+DESCRIPTION
+  Display the list of current configuration properties.
+
+ALIASES
+  $ story config list
+  $ story config l
+
+EXAMPLES
+  $ story config
+  defaultAuthor = "Shea"
+  jiraUrl = "https://something.atlassian.net/"
+```
+
+_See code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/config/index.ts)_
+
+## `story config clear PROP`
+
+Reset a configuration property to its default value.
+
+```
+USAGE
+  $ story config clear PROP
+
+DESCRIPTION
+  Reset a configuration property to its default value.
+
+ALIASES
+  $ story config clear
+  $ story config remove
+  $ story config delete
+  $ story config del
+  $ story config rm
+  $ story config d
+
+EXAMPLES
+  $ story config unset defaultProject
+```
+
+## `story config d PROP`
+
+Reset a configuration property to its default value.
+
+```
+USAGE
+  $ story config d PROP
+
+DESCRIPTION
+  Reset a configuration property to its default value.
+
+ALIASES
+  $ story config clear
+  $ story config remove
+  $ story config delete
+  $ story config del
+  $ story config rm
+  $ story config d
+
+EXAMPLES
+  $ story config unset defaultProject
+```
+
+## `story config del PROP`
+
+Reset a configuration property to its default value.
+
+```
+USAGE
+  $ story config del PROP
+
+DESCRIPTION
+  Reset a configuration property to its default value.
+
+ALIASES
+  $ story config clear
+  $ story config remove
+  $ story config delete
+  $ story config del
+  $ story config rm
+  $ story config d
+
+EXAMPLES
+  $ story config unset defaultProject
+```
+
+## `story config delete PROP`
+
+Reset a configuration property to its default value.
+
+```
+USAGE
+  $ story config delete PROP
+
+DESCRIPTION
+  Reset a configuration property to its default value.
+
+ALIASES
+  $ story config clear
+  $ story config remove
+  $ story config delete
+  $ story config del
+  $ story config rm
+  $ story config d
+
+EXAMPLES
+  $ story config unset defaultProject
+```
+
+## `story config l`
+
+Display the list of current configuration properties.
+
+```
+USAGE
+  $ story config l
+
+DESCRIPTION
+  Display the list of current configuration properties.
+
+ALIASES
+  $ story config list
+  $ story config l
+
+EXAMPLES
+  $ story config
+  defaultAuthor = "Shea"
+  jiraUrl = "https://something.atlassian.net/"
+```
+
+## `story config list`
+
+Display the list of current configuration properties.
+
+```
+USAGE
+  $ story config list
+
+DESCRIPTION
+  Display the list of current configuration properties.
+
+ALIASES
+  $ story config list
+  $ story config l
+
+EXAMPLES
+  $ story config
+  defaultAuthor = "Shea"
+  jiraUrl = "https://something.atlassian.net/"
+```
+
+## `story config remove PROP`
+
+Reset a configuration property to its default value.
+
+```
+USAGE
+  $ story config remove PROP
+
+DESCRIPTION
+  Reset a configuration property to its default value.
+
+ALIASES
+  $ story config clear
+  $ story config remove
+  $ story config delete
+  $ story config del
+  $ story config rm
+  $ story config d
+
+EXAMPLES
+  $ story config unset defaultProject
+```
+
+## `story config rm PROP`
+
+Reset a configuration property to its default value.
+
+```
+USAGE
+  $ story config rm PROP
+
+DESCRIPTION
+  Reset a configuration property to its default value.
+
+ALIASES
+  $ story config clear
+  $ story config remove
+  $ story config delete
+  $ story config del
+  $ story config rm
+  $ story config d
+
+EXAMPLES
+  $ story config unset defaultProject
+```
+
+## `story config s PROP VALUE`
+
+Set a new value for a configuration property.
+
+```
+USAGE
+  $ story config s PROP... VALUE...
+
+DESCRIPTION
+  Set a new value for a configuration property.
+
+ALIASES
+  $ story config s
+
+EXAMPLES
+  $ story config set defaultAuthor Shea B
+  defaultAuthor = Shea B
+```
+
+## `story config set PROP VALUE`
+
+Set a new value for a configuration property.
+
+```
+USAGE
+  $ story config set PROP... VALUE...
+
+DESCRIPTION
+  Set a new value for a configuration property.
+
+ALIASES
+  $ story config s
+
+EXAMPLES
+  $ story config set defaultAuthor Shea B
+  defaultAuthor = Shea B
+```
+
+_See code: [src/commands/config/set.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/config/set.ts)_
+
+## `story config unset PROP`
+
+Reset a configuration property to its default value.
+
+```
+USAGE
+  $ story config unset PROP
+
+DESCRIPTION
+  Reset a configuration property to its default value.
+
+ALIASES
+  $ story config clear
+  $ story config remove
+  $ story config delete
+  $ story config del
+  $ story config rm
+  $ story config d
+
+EXAMPLES
+  $ story config unset defaultProject
+```
+
+_See code: [src/commands/config/unset.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/config/unset.ts)_
+
+## `story get`
+
+Retrieve the story identifier from the current Git branch.
+
+```
+USAGE
+  $ story get
+
+DESCRIPTION
+  Retrieve the story identifier from the current Git branch.
+
+ALIASES
+  $ story 
+
+EXAMPLES
+  $ story
+  SM-12
+```
+
+_See code: [src/commands/get.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/get.ts)_
 
 ## `story help [COMMAND]`
 
@@ -129,293 +448,158 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.35/src/commands/help.ts)_
 
-## `story plugins`
+## `story info`
 
-List installed plugins.
+View information about the current story environment.
 
 ```
 USAGE
-  $ story plugins [--json] [--core]
-
-FLAGS
-  --core  Show core plugins.
-
-GLOBAL FLAGS
-  --json  Format output as json.
+  $ story info
 
 DESCRIPTION
-  List installed plugins.
+  View information about the current story environment.
 
 EXAMPLES
-  $ story plugins
+  $ story info
+  Current story is SM-123.
+   
+  Reading configuration from /home/shea/.storyman.json.
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/index.ts)_
+_See code: [src/commands/info.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/info.ts)_
 
-## `story plugins add PLUGIN`
+## `story install [REPO]`
 
-Installs a plugin into story.
+Install the git prepare-commit-msg hook.
 
 ```
 USAGE
-  $ story plugins add PLUGIN... [--json] [-f] [-h] [-s | -v]
+  $ story install [REPO] [-f]
 
 ARGUMENTS
-  PLUGIN...  Plugin to install.
+  [REPO]  [default: .] Path to Git repository. Defaults to current directory.
 
 FLAGS
-  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
-  -h, --help     Show CLI help.
-  -s, --silent   Silences npm output.
-  -v, --verbose  Show verbose npm output.
-
-GLOBAL FLAGS
-  --json  Format output as json.
+  -f, --force  override an existing prepare-commit-msg hook
 
 DESCRIPTION
-  Installs a plugin into story.
+  Install the git prepare-commit-msg hook.
 
-  Uses npm to install plugins.
+  Install the git `prepare-commit-msg` hook.
 
-  Installation of a user-installed plugin will override a core plugin.
+EXAMPLES
+  $ story install
+  Created prepare-commit-msg hook for /home/shea/projects/some-project.
 
-  Use the STORY_NPM_LOG_LEVEL environment variable to set the npm loglevel.
-  Use the STORY_NPM_REGISTRY environment variable to set the npm registry.
+  $ story install ~/projects/another-project
+  Created prepare-commit-msg hook for /home/shea/projects/another-project.
+```
+
+_See code: [src/commands/install.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/install.ts)_
+
+## `story jira [STORY]`
+
+Open the active story in Jira.
+
+```
+USAGE
+  $ story jira [STORY]
+
+ARGUMENTS
+  [STORY]  Open this story, instead of the current story.
+
+DESCRIPTION
+  Open the active story in Jira.
 
 ALIASES
-  $ story plugins add
+  $ story jira
 
 EXAMPLES
-  Install a plugin from npm registry.
+  $ story open
+  Opening https://something.atlassian.net/browse/SM-12
 
-    $ story plugins add myplugin
+  $ story open 42
+  Opening https://something.atlassian.net/browse/SM-42
 
-  Install a plugin from a github url.
-
-    $ story plugins add https://github.com/someuser/someplugin
-
-  Install a plugin from a github slug.
-
-    $ story plugins add someuser/someplugin
+  $ story open TS-19
+  Opening https://something.atlassian.net/browse/TS-19
 ```
 
-## `story plugins:inspect PLUGIN...`
+## `story open [STORY]`
 
-Displays installation properties of a plugin.
+Open the active story in Jira.
 
 ```
 USAGE
-  $ story plugins inspect PLUGIN...
+  $ story open [STORY]
 
 ARGUMENTS
-  PLUGIN...  [default: .] Plugin to inspect.
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-GLOBAL FLAGS
-  --json  Format output as json.
+  [STORY]  Open this story, instead of the current story.
 
 DESCRIPTION
-  Displays installation properties of a plugin.
-
-EXAMPLES
-  $ story plugins inspect myplugin
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/inspect.ts)_
-
-## `story plugins install PLUGIN`
-
-Installs a plugin into story.
-
-```
-USAGE
-  $ story plugins install PLUGIN... [--json] [-f] [-h] [-s | -v]
-
-ARGUMENTS
-  PLUGIN...  Plugin to install.
-
-FLAGS
-  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
-  -h, --help     Show CLI help.
-  -s, --silent   Silences npm output.
-  -v, --verbose  Show verbose npm output.
-
-GLOBAL FLAGS
-  --json  Format output as json.
-
-DESCRIPTION
-  Installs a plugin into story.
-
-  Uses npm to install plugins.
-
-  Installation of a user-installed plugin will override a core plugin.
-
-  Use the STORY_NPM_LOG_LEVEL environment variable to set the npm loglevel.
-  Use the STORY_NPM_REGISTRY environment variable to set the npm registry.
+  Open the active story in Jira.
 
 ALIASES
-  $ story plugins add
+  $ story jira
 
 EXAMPLES
-  Install a plugin from npm registry.
+  $ story open
+  Opening https://something.atlassian.net/browse/SM-12
 
-    $ story plugins install myplugin
+  $ story open 42
+  Opening https://something.atlassian.net/browse/SM-42
 
-  Install a plugin from a github url.
-
-    $ story plugins install https://github.com/someuser/someplugin
-
-  Install a plugin from a github slug.
-
-    $ story plugins install someuser/someplugin
+  $ story open TS-19
+  Opening https://something.atlassian.net/browse/TS-19
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/install.ts)_
+_See code: [src/commands/open.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/open.ts)_
 
-## `story plugins link PATH`
-
-Links a plugin into the CLI for development.
+## `story prepare-commit-message COMMITMESSAGEFILE [COMMITSOURCE] [COMMITSHA1]`
 
 ```
 USAGE
-  $ story plugins link PATH [-h] [--install] [-v]
-
-ARGUMENTS
-  PATH  [default: .] path to plugin
-
-FLAGS
-  -h, --help          Show CLI help.
-  -v, --verbose
-      --[no-]install  Install dependencies after linking the plugin.
-
-DESCRIPTION
-  Links a plugin into the CLI for development.
-
-  Installation of a linked plugin will override a user-installed or core plugin.
-
-  e.g. If you have a user-installed or core plugin that has a 'hello' command, installing a linked plugin with a 'hello'
-  command will override the user-installed or core plugin implementation. This is useful for development work.
-
-
-EXAMPLES
-  $ story plugins link myplugin
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/link.ts)_
-
-## `story plugins remove [PLUGIN]`
-
-Removes a plugin from the CLI.
-
-```
-USAGE
-  $ story plugins remove [PLUGIN...] [-h] [-v]
-
-ARGUMENTS
-  [PLUGIN...]  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Removes a plugin from the CLI.
+  $ story prepare-commit-message COMMITMESSAGEFILE... [COMMITSOURCE...] [COMMITSHA1...]
 
 ALIASES
-  $ story plugins unlink
-  $ story plugins remove
-
-EXAMPLES
-  $ story plugins remove myplugin
+  $ story prepare-commit-msg
+  $ story prepare-commit-message
 ```
 
-## `story plugins reset`
-
-Remove all user-installed and linked plugins.
+## `story prepare-commit-msg COMMITMESSAGEFILE [COMMITSOURCE] [COMMITSHA1]`
 
 ```
 USAGE
-  $ story plugins reset [--hard] [--reinstall]
-
-FLAGS
-  --hard       Delete node_modules and package manager related files in addition to uninstalling plugins.
-  --reinstall  Reinstall all plugins after uninstalling.
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/reset.ts)_
-
-## `story plugins uninstall [PLUGIN]`
-
-Removes a plugin from the CLI.
-
-```
-USAGE
-  $ story plugins uninstall [PLUGIN...] [-h] [-v]
-
-ARGUMENTS
-  [PLUGIN...]  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Removes a plugin from the CLI.
+  $ story prepare-commit-msg COMMITMESSAGEFILE... [COMMITSOURCE...] [COMMITSHA1...]
 
 ALIASES
-  $ story plugins unlink
-  $ story plugins remove
-
-EXAMPLES
-  $ story plugins uninstall myplugin
+  $ story prepare-commit-msg
+  $ story prepare-commit-message
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/uninstall.ts)_
+## `story uninstall [REPO]`
 
-## `story plugins unlink [PLUGIN]`
-
-Removes a plugin from the CLI.
+Uninstall the git prepare-commit-msg hook.
 
 ```
 USAGE
-  $ story plugins unlink [PLUGIN...] [-h] [-v]
+  $ story uninstall [REPO]
 
 ARGUMENTS
-  [PLUGIN...]  plugin to uninstall
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
+  [REPO]  [default: .] Path to Git repository. Defaults to current directory.
 
 DESCRIPTION
-  Removes a plugin from the CLI.
+  Uninstall the git prepare-commit-msg hook.
 
-ALIASES
-  $ story plugins unlink
-  $ story plugins remove
+  Uninstall the git `prepare-commit-msg` hook.
 
 EXAMPLES
-  $ story plugins unlink myplugin
+  $ story uninstall
+  Removed prepare-commit-msg hook from /home/shea/projects/some-project.
+
+  $ story uninstall ~/projects/another-project
+  Removed prepare-commit-msg hook from /home/shea/projects/another-project.
 ```
 
-## `story plugins update`
-
-Update installed plugins.
-
-```
-USAGE
-  $ story plugins update [-h] [-v]
-
-FLAGS
-  -h, --help     Show CLI help.
-  -v, --verbose
-
-DESCRIPTION
-  Update installed plugins.
-```
-
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/update.ts)_
+_See code: [src/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/uninstall.ts)_
 <!-- commandsstop -->
