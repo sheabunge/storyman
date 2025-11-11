@@ -1,25 +1,30 @@
-import { mkdtemp, readFile, writeFile, rm, rmdir, access } from 'fs/promises'
+import { mkdtemp, rm, rmdir } from 'fs/promises'
+import { exec as legacyExec } from 'child_process'
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { chdir, cwd } from 'process'
-import { STORY_FILENAME, USER_CONFIG_FILENAME } from '../src/utils'
+import { promisify } from 'util'
+import { USER_CONFIG_FILENAME } from '../src/BaseCommand'
+import { deleteIfExists } from '../src/utils'
 
-export const createStoryFile = async (story: string) => {
-  chdir(await mkdtemp(join(tmpdir(), 'set.test')))
-  await writeFile(STORY_FILENAME, story)
+const exec = promisify(legacyExec)
+
+const TEMP_DIR_PREFIX = 'storyman-test-'
+
+export const createStoryBranch = async (story: string): Promise<string> => {
+  const dirname = await mkdtemp(join(tmpdir(), TEMP_DIR_PREFIX))
+  chdir(dirname)
+  await exec(`git init -b ${story}`)
+  return dirname
 }
 
-export const readStoryFile = async () =>
-  (await readFile(STORY_FILENAME)).toString()
+export const cleanup = async () => {
+  if (cwd().startsWith(TEMP_DIR_PREFIX)) {
+    await deleteIfExists(USER_CONFIG_FILENAME)
+    await rm('.git/', { force: true, recursive: true })
 
-const deleteIfExists = (file: string) =>
-  access(file).then(() => rm(file)).catch(() => Function.prototype)
-
-export const cleanupStoryFiles = async () => {
-  await deleteIfExists(STORY_FILENAME)
-  await deleteIfExists(USER_CONFIG_FILENAME)
-
-  const dir = cwd()
-  chdir('..')
-  await rmdir(dir)
+    const dir = cwd()
+    chdir('..')
+    await rmdir(dir)
+  }
 }

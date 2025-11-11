@@ -1,43 +1,29 @@
-import { expect, test } from '@oclif/test'
-import { cleanupStoryFiles, createStoryFile } from '../utils'
-
-const STORY = 'TEST-11'
-const CHILD_STORY = 'TEST-23'
+import { runCommand } from '@oclif/test'
+import { expect } from 'chai'
+import { cleanup, createStoryBranch } from '../utils'
 
 describe('get story', () => {
-  test
-    .do(async () => createStoryFile(STORY))
-    .finally(cleanupStoryFiles)
-    .stdout()
-    .command(['get'])
-    .it('gets current story', async context => {
-      expect(context.stdout).to.eq(`${STORY}\n`)
-    })
+  afterEach(cleanup)
 
-  test
-    .do(async () => createStoryFile(`${STORY} ${CHILD_STORY}`))
-    .finally(cleanupStoryFiles)
-    .stdout()
-    .command(['get'])
-    .it('gets current story, excluding child story', async context => {
-      expect(context.stdout).to.eq(`${STORY}\n`)
-    })
+  it('parses story from current branch', async () => {
+    await createStoryBranch('TEST-11')
+    const { stdout } = await runCommand('get')
+    expect(stdout).to.equal('TEST-11\n')
+  })
 
-  test
-    .do(async () => createStoryFile(`${STORY} ${CHILD_STORY}`))
-    .finally(cleanupStoryFiles)
-    .stdout()
-    .command(['get', '--full'])
-    .it('gets current story, including child story', async context => {
-      expect(context.stdout).to.eq(`${STORY} ${CHILD_STORY}\n`)
-    })
+  it('parses story from branch with comment suffix', async () => {
+    await createStoryBranch('TEST-123-some-additional-comment-15')
+    const { stdout } = await runCommand('get')
+    expect(stdout).to.equal('TEST-123\n')
+  })
 
-  test
-    .do(async () => createStoryFile(`\n\n${STORY} \n  ${CHILD_STORY}\n`))
-    .finally(cleanupStoryFiles)
-    .stdout()
-    .command(['get', '--full'])
-    .it('gets current story from file with additional whitespace', async context => {
-      expect(context.stdout).to.eq(`${STORY} ${CHILD_STORY}\n`)
-    })
+  it('fails if current branch does not begin with a story tag', async () => {
+    await createStoryBranch('branch-name-without-story-tag')
+
+    const { stdout, error } = await runCommand('get')
+
+    expect(stdout).to.be.empty
+    expect(error).to.be.an('error')
+    expect(error?.message).to.equal('Could not find story in branch \'branch-name-without-story-tag\'.')
+  })
 })

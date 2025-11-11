@@ -1,6 +1,6 @@
 {
   "name": "storyman",
-  "version": "1.4.0",
+  "version": "2.0.0-dev.1",
   "description": "Utility for automatically adding a story number to commit messages.",
   "author": "Shea Bunge <shea@sheabunge.com>",
   "license": "MIT",
@@ -11,71 +11,69 @@
     "jira",
     "oclif"
   ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "files": [
-    "/bin",
-    "/lib",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
-  ],
   "bin": {
-    "story": "./bin/run"
+    "story": "./bin/run.js"
   },
+  "files": [
+    "./bin",
+    "./dist",
+    "./oclif.manifest.json"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "shx rm -rf lib && tsc -b",
-    "watch": "shx rm -rf lib && tsc -b --watch",
-    "lint": "eslint . --ext .ts --config .eslintrc.js",
+    "build": "shx rm -rf dist && tsc -b",
+    "watch": "shx rm -rf dist && tsc -b --watch",
+    "lint": "eslint",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm run lint",
-    "prepack": "npm run build && oclif manifest && npm run readme",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "readme": "oclif readme --no-aliases",
-    "version": "npm run readme && git add README.md"
+    "prepack": "oclif manifest && oclif readme",
+    "test": "mocha test/**/*.test.ts",
+    "version": "oclif readme && git add README.md"
   },
   "oclif": {
     "bin": "story",
+    "commands": "./dist/commands",
     "dirname": "story",
-    "commands": "./lib/commands",
-    "default": "index",
+    "topicSeparator": " ",
     "plugins": [
       "@oclif/plugin-help",
+      "@oclif/plugin-not-found",
       "@oclif/plugin-autocomplete",
       "@oclif/plugin-warn-if-update-available"
     ],
-    "topicSeparator": " ",
     "topics": {
       "config": {
         "description": "Manage configuration properties."
       }
-    },
-    "hooks": {
-      "command_not_found": "./lib/hooks/not-found"
     }
   },
   "dependencies": {
-    "@oclif/core": "^2",
-    "@oclif/plugin-autocomplete": "^2.1.9",
-    "@oclif/plugin-help": "^5",
-    "@oclif/plugin-not-found": "^2.3.23",
-    "@oclif/plugin-warn-if-update-available": "^2.0.36",
+    "@inquirer/prompts": "^7.10.0",
+    "@oclif/core": "^4",
+    "@oclif/plugin-help": "^6",
+    "@oclif/plugin-not-found": "^3.2.72",
+    "@oclif/plugin-plugins": "^5",
+    "@oclif/plugin-warn-if-update-available": "^3.1.52",
+    "globals": "^16.5.0",
     "open": "^v8.4.2"
   },
   "devDependencies": {
-    "@oclif/test": "^2.3.17",
+    "@eslint/compat": "^1",
+    "@oclif/plugin-autocomplete": "^3.2.39",
+    "@oclif/test": "^4.1.14",
     "@types/chai": "^4",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.18.25",
+    "@types/mocha": "^10",
+    "@types/node": "^18",
     "chai": "^4",
-    "eslint": "^7.32.0",
-    "eslint-config-oclif": "^4",
-    "eslint-config-oclif-typescript": "^1.0.3",
-    "mocha": "^9",
-    "oclif": "^3",
+    "eslint": "^9",
+    "eslint-config-oclif": "^6",
+    "mocha": "^10",
+    "oclif": "^4",
     "shx": "^0.3.3",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5"
+    "ts-node": "^10",
+    "tsx": "^4.20.6",
+    "typescript": "^5"
   },
   "engines": {
     "node": ">=12.0.0"

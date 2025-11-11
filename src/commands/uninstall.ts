@@ -1,9 +1,10 @@
 import { rm } from 'fs/promises'
 import { resolve } from 'path'
-import { BaseInstallCommand } from '../base-install'
+import { BaseInstallCommand } from '../BaseInstallCommand'
 
 export default class Uninstall extends BaseInstallCommand<typeof Uninstall> {
   static summary = 'Uninstall the git prepare-commit-msg hook.'
+
   static description = 'Uninstall the git `prepare-commit-msg` hook.'
 
   static examples = [

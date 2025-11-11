@@ -1,7 +1,7 @@
 import { Args, Command } from '@oclif/core'
 import { access, readFile } from 'fs/promises'
 import { dirname, join, resolve } from 'path'
-import { BaseCommand } from './base'
+import { BaseCommand } from './BaseCommand'
 
 const HOOK_FILE = '.git/hooks/prepare-commit-msg'
 
@@ -21,8 +21,7 @@ export abstract class BaseInstallCommand<T extends typeof Command> extends BaseC
     const file = join(resolve(repo), HOOK_FILE)
 
     await access(dirname(file)).catch(() =>
-      this.error('Current directory does not appear to be a Git repository.')
-    )
+      this.error('Current directory does not appear to be a Git repository.'))
 
     return file
   }

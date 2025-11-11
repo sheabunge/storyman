@@ -1,16 +1,17 @@
 import { Args } from '@oclif/core'
-import { BaseCommand } from '../../base'
+import { BaseCommand } from '../../BaseCommand'
 
 export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
   static description = 'Set a new value for a configuration property.'
 
   static examples = [
-    `$ story config set defaultProject SM
-defaultProject = SM
+    `$ story config set defaultAuthor Shea B
+defaultAuthor = Shea B
 `
   ]
 
   static aliases = ['config:s']
+
   static strict = false
 
   static args = {

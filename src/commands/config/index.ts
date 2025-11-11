@@ -1,16 +1,14 @@
-import { BaseCommand } from '../../base'
+import { BaseCommand } from '../../BaseCommand'
 
 export default class ConfigIndex extends BaseCommand<typeof ConfigIndex> {
-  static description = 'Display the list of current configuration properties.'
+  public static readonly description = 'Display the list of current configuration properties.'
 
-  static aliases = ['config:list', 'config:l']
+  public static readonly aliases = ['config:list', 'config:l']
 
-  static examples = [
+  public static readonly examples = [
     `$ story config
 defaultAuthor = "Shea"
-defaultProject = "SM"
 jiraUrl = "https://something.atlassian.net/"
-projects = "SM EG ETC"
 `
   ]
 

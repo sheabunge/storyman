@@ -1,9 +1,12 @@
 *-debug.log
 *-error.log
-/.nyc_output
+**/.DS_Store
+/.idea
 /dist
-/lib
-/package-lock.json
 /tmp
-node_modules
+/node_modules
 oclif.manifest.json
+yarn.lock
+pnpm-lock.yaml
+/lib/
+tsconfig.tsbuildinfo

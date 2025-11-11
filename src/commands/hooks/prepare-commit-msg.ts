@@ -1,17 +1,19 @@
 import { readFile, writeFile } from 'fs/promises'
 import { EOL } from 'os'
-import { BaseCommand } from '../../base'
+import { BaseCommand, STORY_RE } from '../../BaseCommand'
 import { Args } from '@oclif/core'
-import { Story } from '../../types/story'
-import { formatStory, splitStory } from '../../utils'
+import { Story } from '../../types/Story'
+import { formatStory } from '../../utils'
 
 const PREFIX = '[storyman]'
-const VALID_SOURCES = new Set(['message', 'commit'])
+const VALID_SOURCES = new Set(['commit', 'message'])
 const AUTHOR_RE = /\[(?<author>.+)]\s*^/m
 
 export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMsg> {
   static hidden = true
+
   static strict = false
+
   static aliases = ['prepare-commit-msg', 'prepare-commit-message']
 
   static args = {
@@ -20,37 +22,20 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     commitSHA1: Args.string()
   }
 
-  private async buildStoryRegExp(story: Story | undefined) {
-    const userConfig = await this.userConfig
-    const projects = new Set((await userConfig.get('projects')).split(/\W+/))
-
-    const defaultProject = await userConfig.get('defaultProject')
-    projects.add(defaultProject)
-
-    if (story) {
-      const [parentProject] = splitStory(story.parent)
-      projects.add(parentProject)
-
-      if (story.child) {
-        const [childProject] = splitStory(story.child)
-        projects.add(childProject)
-      }
-    }
-
-    const projectTags = [...projects.values()].filter(Boolean).join('|')
-    return new RegExp(`(?:${projectTags})-\\d+`)
-  }
-
   private async getStoryTag(story: Story | undefined, commitMessage: string): Promise<string | undefined> {
-    const existingTag = commitMessage.match(await this.buildStoryRegExp(story))
+    const existingTag = commitMessage.match(STORY_RE)
 
     if (existingTag) {
       this.log(`${PREFIX} Commit message already mentions story ${existingTag[0]}.`)
-    } else if (story) {
-      return `${formatStory(story)} `
-    } else {
-      this.warn(`${PREFIX} Commit does not contain story tag.`)
+      return undefined
     }
+
+    if (story) {
+      return `${formatStory(story)} `
+    }
+
+    this.warn(`${PREFIX} Commit does not contain story tag.`)
+    return undefined
   }
 
   private async getAuthorTag(commitMessage: string): Promise<string | undefined> {
@@ -62,6 +47,8 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     } else if (defaultAuthor) {
       return ` [${defaultAuthor}]`
     }
+
+    return undefined
   }
 
   async run() {

@@ -1,31 +1,18 @@
-import { BaseCommand } from '../base'
-import { Flags } from '@oclif/core'
+import { BaseCommand } from '../BaseCommand'
 import { formatStory } from '../utils'
 
 export default class Get extends BaseCommand<typeof Get> {
-  static description = 'Retrieve the current story identifier.'
+  static description = 'Retrieve the story identifier from the current Git branch.'
 
   static examples = [
-    '$ story\nSM-12\n',
-    '$ story -f\nSM-12 SM-34\n'
+    '$ story\nSM-12\n'
   ]
-
-  static flags = {
-    full: Flags.boolean({
-      char: 'f',
-      description: 'include both parent and child stories'
-    })
-  }
 
   static aliases = ['']
 
   async run() {
-    const { flags } = await this.parse(Get)
+    await this.parse()
     const story = await this.getStory()
-
-    this.log(story ?
-      formatStory({ parent: story.parent, child: flags.full ? story.child : undefined }) :
-      ''
-    )
+    this.log(formatStory(story))
   }
 }

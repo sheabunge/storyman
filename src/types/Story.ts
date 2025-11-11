@@ -1,4 +1,4 @@
 export interface Story {
-  parent: string
-  child?: string
+  number: number
+  project: string
 }

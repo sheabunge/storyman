@@ -1,9 +1,12 @@
-import { Args, ux } from '@oclif/core'
-import * as open from 'open'
-import { BaseCommand } from '../base'
-import { prefixStory, trimTrailingSlash } from '../utils'
+import { Args } from '@oclif/core'
+import { input } from '@inquirer/prompts'
+import open from 'open'
+import { BaseCommand } from '../BaseCommand'
+import { trimTrailingSlash } from '../utils'
 
 export default class Open extends BaseCommand<typeof Open> {
+  static aliases = ['jira']
+
   static description = 'Open the active story in Jira.'
 
   static examples = [
@@ -18,8 +21,6 @@ Opening https://something.atlassian.net/browse/TS-19
 `
   ]
 
-  static aliases = ['jira']
-
   static args = {
     story: Args.string({
       required: false,
@@ -32,7 +33,7 @@ Opening https://something.atlassian.net/browse/TS-19
 
     /* eslint-disable no-await-in-loop */
     while (!url) {
-      url = await ux.prompt('What is your Jira site URL?', { required: true })
+      url = await input({ message: 'What is your Jira site URL?', required: true })
 
       if (!url || !url.toLowerCase().startsWith('http')) {
         this.warn('That doesn\'t appear to be a valid URL.')
@@ -50,19 +51,9 @@ Opening https://something.atlassian.net/browse/TS-19
   }
 
   async run() {
-    const { args: { story: storyOverride } } = await this.parse(Open)
     const baseUrl = await this.getBaseUrl()
 
-    const story = await (async (): Promise<string | undefined> => {
-      if (storyOverride) {
-        const defaultProject = await (await this.userConfig).get('defaultProject')
-        return prefixStory(defaultProject, storyOverride)
-      }
-
-      const story = await this.getStory()
-      return story?.child ?? story?.parent
-    })()
-
+    const story = await this.getStory()
     const url = story ? `${trimTrailingSlash(baseUrl)}/browse/${story}` : baseUrl
 
     this.log(`Opening ${url}`)

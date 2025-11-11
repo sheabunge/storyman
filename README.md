@@ -2,16 +2,12 @@ storyman
 ========
 
 When using project-tracking tools such as Jira, it can be useful to include a story tag (such as EG-123) in commit
-messages, so that changes can be linked to stories and vice-versa.
+messages, so that changes can be linked to stories and vice versa.
 
-However, doing so manually can quickly become tiresome, and it's incredibly easy to forget to include a story tag, or
-to use the wrong story by mistake.
+Instead of doing so manually, which can be prone to inconsistency and mistakes, this tool automates the process by
+rewriting commit messages to include the current story.
 
-Instead of needing to always manually specify the story number when committing, this tool can handle that for you.
-
-# Usage
-
-## Installation
+# Installation
 
 Install through npm:
 
@@ -19,18 +15,10 @@ Install through npm:
 $ npm install -g storyman
 ```
 
-Optionally, create an empty `.story` file in your project directory, or in the parent directory of your projects if
-you'd like to share the same story across multiple Git repositories. This file will be used to store the current story
-number.
+In order to rewrite commit messages automatically, storyman will need to be installed in any Git repositories where
+you want tagged commits.
 
-```sh-session
-$ touch .story
-```
-
-If you skip this step, then a `.story` file will be automatically created in the home directory.
-
-Finally, you'll also need to install storyman in any Git repositories where you want automatically-tagged commits. This
-can be achieved by running `story install` inside an existing Git repository:
+This can be achieved by running  `story install` inside an existing Git repository:
 
 ```sh-session
 $ cd ~/projects/some-project
@@ -45,18 +33,22 @@ $ story install ~/projects/another-project
 Created prepare-commit-msg hook for /home/shea/projects/another-project.
 ```
 
-Now you're ready to use storyman!
+# Usage
 
-## Basic usage
-
-When working on a new story, or switching between stories, use the `story set` command:
+storyman v2 has switched to a branch-based method of tracking stories. When working on a new story, create a Git branch
+beginning with the story tag:
 
 ```sh-session
-$ story set EG-123
-Current story is now EG-123.
+$ git checkout -b SM-124
 ```
 
-You can always check what the current story is using `story`:
+Branch names can include an optional 'comment' following this story tag, which will be ignored by storyman:
+
+```sh-session
+$ git branch -m SM-124-introduce-x-feature
+```
+
+You check what the detected story is using `story`:
 
 ```sh-session
 $ story
@@ -69,38 +61,6 @@ When making a commit, storyman will automatically add the current story tag to t
 $ git commit -m "Made some changes."
 [master fb98b25] EG-123 Made some changes.
  1 file changed, 71 insertions(+), 3 deletions(-)
-```
-
-You can also use the `story` command when creating branches:
-
-```sh-session
-$ git checkout -b $(story)-fixes
-Switched to a new branch 'EG-123-fixes'
-```
-
-## Default project
-
-If you find yourself typically working in a single project, then storyman can automatically set this for you when
-changing stories, so all you need to provide is the story number:
-
-```sh-session
-$ story set 12
-Current story is now EG-12.
-```
-
-To enable this functionality, set the `defaultProject` configuration property:
-
-```sh-session
-$ story set config defaultProject EG
-```
-
-With this enabled, it's still possible to switch to stories from different projects, as long as the full story tag
-is specified:
-
-```sh-session
-$ story set config defaultProject EG
-$ story set SM-142
-Current story is now SM-142.
 ```
 
 ## Tagging authors
@@ -119,29 +79,6 @@ $ story config set defaultAuthor Shea
 If you specify an author in the commit message manually, storyman will attempt to detect this and refrain from adding
 an author tag.
 
-## Story override
-
-Similarly to how the default author can be overridden in individual commits, the same functionality occurs for
-overriding the default story in a single commit.
-
-In order to use this functionality, it's necessary to specify a list of all possible project tags beforehand:
-
-```sh-session
-$ story config set projects LIST OF PROJECT TAGS
-```
-
-This is to ensure that only valid project keys are recognised as stories, instead of other text that matches the ABC-123
-format. Here's an example of how this works:
-
-```sh-session
-$ story config set projects EG SM ABC SHEA
-$ story set SM-123
-$ git commit -m "EG-12 Made some changes."
-Commit message already mentions story EG-12.
-[master bf406096] EG-12 Made some changes.
- 1 file changed, 1 insertion(+), 1 deletion(-)
-```
-
 ## Opening Jira
 
 Storyman makes it easy to navigate from code to the Jira ticket you're currently working on.
@@ -157,212 +94,31 @@ What is your Jira site URL?: https://something.atlassian.net/
 Opening https://something.atlassian.net/browse/EG-12
 ```
 
-## Sub-stories
-
-When working with sub-stories or child stories, storyman is able to recognise and process both of these story
-numbers. Simply specify both when using `set story`:
-
-```sh-session
-$ story set EG-12 EG-20
-Current story is now EG-12 EG-20.
-```
-
-For convenience when working with branches, the basic `story` command will only output the parent story
-
-```sh-session
-$ git checkout $(story)-fixes
-Switched to branch 'EG-12-fixes'
-```
-
-Both stories will be included in commit messages, and can be retrieved by passing the `--full` flag to `story get`:
-
-```sh-session
-$ story get --full
-EG-12 EG-20
-```
-
-## Repository-specific stories
-
-Storyman will always look for a `.story` file in the current working directory, and then work up the directory tree
-until a match is found, otherwise defaulting to the user's home directory.
-
-This allows you to have a global`.story` file that is shared between multiple repositories, or individual `.story` files
-that can even be committed to Git and shared amongst a team.
-
-Additionally, alongside the `.story` file will usually be a `.storyman.json` file which contains the configuration
-properties that can be altered with the `story config` commands.
-
 # Command Reference
 
 <!-- commands -->
-* [`story autocomplete [SHELL]`](#story-autocomplete-shell)
-* [`story clear`](#story-clear)
-* [`story config`](#story-config)
-* [`story config set PROP VALUE`](#story-config-set-prop-value)
-* [`story config unset PROP`](#story-config-unset-prop)
-* [`story get`](#story-get)
-* [`story help [COMMANDS]`](#story-help-commands)
-* [`story info`](#story-info)
-* [`story install [REPO]`](#story-install-repo)
-* [`story open [STORY]`](#story-open-story)
-* [`story set STORY [SUBSTORY]`](#story-set-story-substory)
-* [`story uninstall [REPO]`](#story-uninstall-repo)
+* [`story help [COMMAND]`](#story-help-command)
+* [`story plugins`](#story-plugins)
+* [`story plugins add PLUGIN`](#story-plugins-add-plugin)
+* [`story plugins:inspect PLUGIN...`](#story-pluginsinspect-plugin)
+* [`story plugins install PLUGIN`](#story-plugins-install-plugin)
+* [`story plugins link PATH`](#story-plugins-link-path)
+* [`story plugins remove [PLUGIN]`](#story-plugins-remove-plugin)
+* [`story plugins reset`](#story-plugins-reset)
+* [`story plugins uninstall [PLUGIN]`](#story-plugins-uninstall-plugin)
+* [`story plugins unlink [PLUGIN]`](#story-plugins-unlink-plugin)
+* [`story plugins update`](#story-plugins-update)
 
-## `story autocomplete [SHELL]`
-
-Display autocomplete installation instructions.
-
-```
-USAGE
-  $ story autocomplete [SHELL] [-r]
-
-ARGUMENTS
-  SHELL  shell type
-
-FLAGS
-  -r, --refresh-cache  Refresh cache (ignores displaying instructions)
-
-DESCRIPTION
-  Display autocomplete installation instructions.
-
-EXAMPLES
-  $ story autocomplete
-
-  $ story autocomplete bash
-
-  $ story autocomplete zsh
-
-  $ story autocomplete --refresh-cache
-```
-
-_See code: [src/commands/autocomplete.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/autocomplete.ts)_
-
-## `story clear`
-
-Reset the current story identifier.
-
-```
-USAGE
-  $ story clear
-
-DESCRIPTION
-  Reset the current story identifier.
-
-ALIASES
-  $ story unset
-  $ story reset
-
-EXAMPLES
-  $ story clear
-  Current story has been cleared, was EG-11.
-```
-
-_See code: [src/commands/clear.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/clear.ts)_
-
-## `story config`
-
-Display the list of current configuration properties.
-
-```
-USAGE
-  $ story config
-
-DESCRIPTION
-  Display the list of current configuration properties.
-
-ALIASES
-  $ story config list
-  $ story config l
-
-EXAMPLES
-  $ story config
-  defaultAuthor = "Shea"
-  defaultProject = "SM"
-  jiraUrl = "https://something.atlassian.net/"
-  projects = "SM EG ETC"
-```
-
-_See code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/config/index.ts)_
-
-## `story config set PROP VALUE`
-
-Set a new value for a configuration property.
-
-```
-USAGE
-  $ story config set PROP VALUE
-
-DESCRIPTION
-  Set a new value for a configuration property.
-
-ALIASES
-  $ story config s
-
-EXAMPLES
-  $ story config set defaultProject SM
-  defaultProject = SM
-```
-
-## `story config unset PROP`
-
-Reset a configuration property to its default value.
-
-```
-USAGE
-  $ story config unset PROP
-
-DESCRIPTION
-  Reset a configuration property to its default value.
-
-ALIASES
-  $ story config clear
-  $ story config remove
-  $ story config delete
-  $ story config del
-  $ story config rm
-  $ story config d
-
-EXAMPLES
-  $ story config unset defaultProject
-```
-
-## `story get`
-
-Retrieve the current story identifier.
-
-```
-USAGE
-  $ story get [-f]
-
-FLAGS
-  -f, --full  include both parent and child stories
-
-DESCRIPTION
-  Retrieve the current story identifier.
-
-ALIASES
-  $ story 
-
-EXAMPLES
-  $ story
-  SM-12
-
-  $ story -f
-  SM-12 SM-34
-```
-
-_See code: [src/commands/get.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/get.ts)_
-
-## `story help [COMMANDS]`
+## `story help [COMMAND]`
 
 Display help for story.
 
 ```
 USAGE
-  $ story help [COMMANDS] [-n]
+  $ story help [COMMAND...] [-n]
 
 ARGUMENTS
-  COMMANDS  Command to show help for.
+  [COMMAND...]  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -371,137 +127,295 @@ DESCRIPTION
   Display help for story.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.35/src/commands/help.ts)_
 
-## `story info`
+## `story plugins`
 
-View information about the current story environment.
-
-```
-USAGE
-  $ story info
-
-DESCRIPTION
-  View information about the current story environment.
-
-EXAMPLES
-  $ story info
-  Current story is SM-123
-  Current child story is SM-134
-   
-  Reading story from /home/shea/.story
-  Reading configuration from /home/shea/.storyman.json
-```
-
-_See code: [src/commands/info.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/info.ts)_
-
-## `story install [REPO]`
-
-Install the git prepare-commit-msg hook.
+List installed plugins.
 
 ```
 USAGE
-  $ story install [REPO] [-f]
-
-ARGUMENTS
-  REPO  [default: .] Path to Git repository. Defaults to current directory.
+  $ story plugins [--json] [--core]
 
 FLAGS
-  -f, --force  override an existing prepare-commit-msg hook
+  --core  Show core plugins.
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
-  Install the git prepare-commit-msg hook.
-
-  Install the git `prepare-commit-msg` hook.
+  List installed plugins.
 
 EXAMPLES
-  $ story install
-  Created prepare-commit-msg hook for /home/shea/projects/some-project.
-
-  $ story install ~/projects/another-project
-  Created prepare-commit-msg hook for /home/shea/projects/another-project.
+  $ story plugins
 ```
 
-_See code: [src/commands/install.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/install.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/index.ts)_
 
-## `story open [STORY]`
+## `story plugins add PLUGIN`
 
-Open the active story in Jira.
+Installs a plugin into story.
 
 ```
 USAGE
-  $ story open [STORY]
+  $ story plugins add PLUGIN... [--json] [-f] [-h] [-s | -v]
 
 ARGUMENTS
-  STORY  Open this story, instead of the current story.
+  PLUGIN...  Plugin to install.
+
+FLAGS
+  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
+  -h, --help     Show CLI help.
+  -s, --silent   Silences npm output.
+  -v, --verbose  Show verbose npm output.
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
-  Open the active story in Jira.
+  Installs a plugin into story.
+
+  Uses npm to install plugins.
+
+  Installation of a user-installed plugin will override a core plugin.
+
+  Use the STORY_NPM_LOG_LEVEL environment variable to set the npm loglevel.
+  Use the STORY_NPM_REGISTRY environment variable to set the npm registry.
 
 ALIASES
-  $ story jira
+  $ story plugins add
 
 EXAMPLES
-  $ story open
-  Opening https://something.atlassian.net/browse/SM-12
+  Install a plugin from npm registry.
 
-  $ story open 42
-  Opening https://something.atlassian.net/browse/SM-42
+    $ story plugins add myplugin
 
-  $ story open TS-19
-  Opening https://something.atlassian.net/browse/TS-19
+  Install a plugin from a github url.
+
+    $ story plugins add https://github.com/someuser/someplugin
+
+  Install a plugin from a github slug.
+
+    $ story plugins add someuser/someplugin
 ```
 
-_See code: [src/commands/open.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/open.ts)_
+## `story plugins:inspect PLUGIN...`
 
-## `story set STORY [SUBSTORY]`
-
-Set the active story.
+Displays installation properties of a plugin.
 
 ```
 USAGE
-  $ story set STORY [SUBSTORY]
+  $ story plugins inspect PLUGIN...
 
 ARGUMENTS
-  STORY
-  SUBSTORY  sub story
+  PLUGIN...  [default: .] Plugin to inspect.
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
-  Set the active story.
+  Displays installation properties of a plugin.
 
 EXAMPLES
-  $ story set SM-12
-  Current story is now SM-12.
-
-  $ story set SM-12 SM-34
-  Current story is now SM-12 SM-34.
+  $ story plugins inspect myplugin
 ```
 
-_See code: [src/commands/set.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/set.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/inspect.ts)_
 
-## `story uninstall [REPO]`
+## `story plugins install PLUGIN`
 
-Uninstall the git prepare-commit-msg hook.
+Installs a plugin into story.
 
 ```
 USAGE
-  $ story uninstall [REPO]
+  $ story plugins install PLUGIN... [--json] [-f] [-h] [-s | -v]
 
 ARGUMENTS
-  REPO  [default: .] Path to Git repository. Defaults to current directory.
+  PLUGIN...  Plugin to install.
+
+FLAGS
+  -f, --force    Force npm to fetch remote resources even if a local copy exists on disk.
+  -h, --help     Show CLI help.
+  -s, --silent   Silences npm output.
+  -v, --verbose  Show verbose npm output.
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
-  Uninstall the git prepare-commit-msg hook.
+  Installs a plugin into story.
 
-  Uninstall the git `prepare-commit-msg` hook.
+  Uses npm to install plugins.
+
+  Installation of a user-installed plugin will override a core plugin.
+
+  Use the STORY_NPM_LOG_LEVEL environment variable to set the npm loglevel.
+  Use the STORY_NPM_REGISTRY environment variable to set the npm registry.
+
+ALIASES
+  $ story plugins add
 
 EXAMPLES
-  $ story uninstall
-  Removed prepare-commit-msg hook from /home/shea/projects/some-project.
+  Install a plugin from npm registry.
 
-  $ story uninstall ~/projects/another-project
-  Removed prepare-commit-msg hook from /home/shea/projects/another-project.
+    $ story plugins install myplugin
+
+  Install a plugin from a github url.
+
+    $ story plugins install https://github.com/someuser/someplugin
+
+  Install a plugin from a github slug.
+
+    $ story plugins install someuser/someplugin
 ```
 
-_See code: [src/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v1.4.0/src/commands/uninstall.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/install.ts)_
+
+## `story plugins link PATH`
+
+Links a plugin into the CLI for development.
+
+```
+USAGE
+  $ story plugins link PATH [-h] [--install] [-v]
+
+ARGUMENTS
+  PATH  [default: .] path to plugin
+
+FLAGS
+  -h, --help          Show CLI help.
+  -v, --verbose
+      --[no-]install  Install dependencies after linking the plugin.
+
+DESCRIPTION
+  Links a plugin into the CLI for development.
+
+  Installation of a linked plugin will override a user-installed or core plugin.
+
+  e.g. If you have a user-installed or core plugin that has a 'hello' command, installing a linked plugin with a 'hello'
+  command will override the user-installed or core plugin implementation. This is useful for development work.
+
+
+EXAMPLES
+  $ story plugins link myplugin
+```
+
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/link.ts)_
+
+## `story plugins remove [PLUGIN]`
+
+Removes a plugin from the CLI.
+
+```
+USAGE
+  $ story plugins remove [PLUGIN...] [-h] [-v]
+
+ARGUMENTS
+  [PLUGIN...]  plugin to uninstall
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Removes a plugin from the CLI.
+
+ALIASES
+  $ story plugins unlink
+  $ story plugins remove
+
+EXAMPLES
+  $ story plugins remove myplugin
+```
+
+## `story plugins reset`
+
+Remove all user-installed and linked plugins.
+
+```
+USAGE
+  $ story plugins reset [--hard] [--reinstall]
+
+FLAGS
+  --hard       Delete node_modules and package manager related files in addition to uninstalling plugins.
+  --reinstall  Reinstall all plugins after uninstalling.
+```
+
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/reset.ts)_
+
+## `story plugins uninstall [PLUGIN]`
+
+Removes a plugin from the CLI.
+
+```
+USAGE
+  $ story plugins uninstall [PLUGIN...] [-h] [-v]
+
+ARGUMENTS
+  [PLUGIN...]  plugin to uninstall
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Removes a plugin from the CLI.
+
+ALIASES
+  $ story plugins unlink
+  $ story plugins remove
+
+EXAMPLES
+  $ story plugins uninstall myplugin
+```
+
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/uninstall.ts)_
+
+## `story plugins unlink [PLUGIN]`
+
+Removes a plugin from the CLI.
+
+```
+USAGE
+  $ story plugins unlink [PLUGIN...] [-h] [-v]
+
+ARGUMENTS
+  [PLUGIN...]  plugin to uninstall
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Removes a plugin from the CLI.
+
+ALIASES
+  $ story plugins unlink
+  $ story plugins remove
+
+EXAMPLES
+  $ story plugins unlink myplugin
+```
+
+## `story plugins update`
+
+Update installed plugins.
+
+```
+USAGE
+  $ story plugins update [-h] [-v]
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Update installed plugins.
+```
+
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.53/src/commands/plugins/update.ts)_
 <!-- commandsstop -->

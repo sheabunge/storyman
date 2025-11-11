@@ -3,19 +3,22 @@ import { readFile, writeFile } from 'fs/promises'
 const FALSY_STRINGS = new Set(['0', 'false', 'no'])
 
 const parseJson = <T>(data: string, allowedProperties: Set<keyof T | string>): Partial<T> =>
-  (Object.fromEntries(
-    Object.entries(JSON.parse(data)).filter(([prop]) => allowedProperties.has(prop))
-  ) as Partial<T>)
+  (Object.fromEntries(Object
+    .entries(JSON.parse(data))
+    .filter(([prop]) => allowedProperties.has(prop))) as Partial<T>)
 
 const parseBoolean = (value: unknown): boolean =>
   Boolean(value) && !('string' === typeof value && FALSY_STRINGS.has(value.toLowerCase()))
 
 export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   public readonly configFile: string
+
   public readonly defaults: T
+
   public readonly validProps: Set<keyof T | string>
 
   private stored: Partial<T> | undefined
+
   private dirty: Partial<T>
 
   constructor(configFile: string, defaultValues: T) {
@@ -26,9 +29,9 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   }
 
   private read = (): Promise<Partial<T>> =>
-    this.stored ?
-      Promise.resolve(this.stored) :
-      readFile(this.configFile)
+    this.stored
+      ? Promise.resolve(this.stored)
+      : readFile(this.configFile)
         .then(content =>
           parseJson<T>(content.toString(), this.validProps))
         .catch(() => this.defaults)
@@ -39,26 +42,21 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
 
   getAll = () =>
     this.read().then(stored =>
-      Object.fromEntries(
-        (Object.keys(this.defaults) as Array<keyof T>).map(prop =>
-          [prop, this.dirty[prop] ?? stored[prop] ?? this.defaults[prop]]
-        )
-      )
-    )
+      Object.fromEntries((Object.keys(this.defaults) as Array<keyof T>)
+        .map(prop => [prop, this.dirty[prop] ?? stored[prop] ?? this.defaults[prop]])))
 
   get = <K extends keyof T>(prop: K): Promise<T[K]> =>
     this.read().then(stored =>
-      this.dirty[prop] ?? stored[prop] ?? this.defaults[prop]
-    )
+      this.dirty[prop] ?? stored[prop] ?? this.defaults[prop])
 
   private parseValue = <K extends keyof T>(prop: K, value: T[K]): T[K] => {
     switch (typeof this.defaults[prop]) {
-    case 'boolean':
-      return parseBoolean(value) as T[K]
-    case 'number':
-      return Number(value) as T[K]
-    default:
-      return value
+      case 'boolean':
+        return parseBoolean(value) as T[K]
+      case 'number':
+        return Number(value) as T[K]
+      default:
+        return value
     }
   }
 
@@ -74,7 +72,7 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
       delete this.dirty[prop]
     })
 
-  isValid = (prop: string | keyof T): prop is keyof T =>
+  isValid = (prop: keyof T | string): prop is keyof T =>
     this.validProps.has(prop)
 
   write = (): Promise<void> =>
