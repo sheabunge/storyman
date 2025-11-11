@@ -10,7 +10,7 @@ defaultAuthor = Shea B
 `
   ]
 
-  static aliases = ['config:s']
+  static hiddenAliases = ['config:s']
 
   static strict = false
 

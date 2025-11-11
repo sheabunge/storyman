@@ -33,9 +33,11 @@
   },
   "oclif": {
     "bin": "story",
+    "default": "get",
     "commands": "./dist/commands",
     "dirname": "story",
     "topicSeparator": " ",
+    "hideAliasesFromRoot": "true",
     "plugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-not-found",

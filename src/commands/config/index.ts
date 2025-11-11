@@ -3,7 +3,9 @@ import { BaseCommand } from '../../BaseCommand'
 export default class ConfigIndex extends BaseCommand<typeof ConfigIndex> {
   public static readonly description = 'Display the list of current configuration properties.'
 
-  public static readonly aliases = ['config:list', 'config:l']
+  public static readonly aliases = ['config:list']
+
+  public static readonly hiddenAliases = ['config:l']
 
   public static readonly examples = [
     `$ story config

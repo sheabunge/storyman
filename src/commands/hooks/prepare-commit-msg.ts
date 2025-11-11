@@ -10,11 +10,11 @@ const VALID_SOURCES = new Set(['commit', 'message'])
 const AUTHOR_RE = /\[(?<author>.+)]\s*^/m
 
 export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMsg> {
-  static hidden = true
+  public static hidden = true
 
   static strict = false
 
-  static aliases = ['prepare-commit-msg', 'prepare-commit-message']
+  static hiddenAliases = ['prepare-commit-msg', 'prepare-commit-message']
 
   static args = {
     commitMessageFile: Args.file({ required: true }),

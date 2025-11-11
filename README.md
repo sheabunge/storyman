@@ -97,17 +97,9 @@ Opening https://something.atlassian.net/browse/EG-12
 # Command Reference
 
 <!-- commands -->
-* [`story`](#story)
 * [`story config`](#story-config)
 * [`story config clear PROP`](#story-config-clear-prop)
-* [`story config d PROP`](#story-config-d-prop)
-* [`story config del PROP`](#story-config-del-prop)
-* [`story config delete PROP`](#story-config-delete-prop)
-* [`story config l`](#story-config-l)
 * [`story config list`](#story-config-list)
-* [`story config remove PROP`](#story-config-remove-prop)
-* [`story config rm PROP`](#story-config-rm-prop)
-* [`story config s PROP VALUE`](#story-config-s-prop-value)
 * [`story config set PROP VALUE`](#story-config-set-prop-value)
 * [`story config unset PROP`](#story-config-unset-prop)
 * [`story get`](#story-get)
@@ -116,28 +108,7 @@ Opening https://something.atlassian.net/browse/EG-12
 * [`story install [REPO]`](#story-install-repo)
 * [`story jira [STORY]`](#story-jira-story)
 * [`story open [STORY]`](#story-open-story)
-* [`story prepare-commit-message COMMITMESSAGEFILE [COMMITSOURCE] [COMMITSHA1]`](#story-prepare-commit-message-commitmessagefile-commitsource-commitsha1)
-* [`story prepare-commit-msg COMMITMESSAGEFILE [COMMITSOURCE] [COMMITSHA1]`](#story-prepare-commit-msg-commitmessagefile-commitsource-commitsha1)
 * [`story uninstall [REPO]`](#story-uninstall-repo)
-
-## `story`
-
-Retrieve the story identifier from the current Git branch.
-
-```
-USAGE
-  $ story
-
-DESCRIPTION
-  Retrieve the story identifier from the current Git branch.
-
-ALIASES
-  $ story 
-
-EXAMPLES
-  $ story
-  SM-12
-```
 
 ## `story config`
 
@@ -152,7 +123,6 @@ DESCRIPTION
 
 ALIASES
   $ story config list
-  $ story config l
 
 EXAMPLES
   $ story config
@@ -175,104 +145,9 @@ DESCRIPTION
 
 ALIASES
   $ story config clear
-  $ story config remove
-  $ story config delete
-  $ story config del
-  $ story config rm
-  $ story config d
 
 EXAMPLES
   $ story config unset defaultProject
-```
-
-## `story config d PROP`
-
-Reset a configuration property to its default value.
-
-```
-USAGE
-  $ story config d PROP
-
-DESCRIPTION
-  Reset a configuration property to its default value.
-
-ALIASES
-  $ story config clear
-  $ story config remove
-  $ story config delete
-  $ story config del
-  $ story config rm
-  $ story config d
-
-EXAMPLES
-  $ story config unset defaultProject
-```
-
-## `story config del PROP`
-
-Reset a configuration property to its default value.
-
-```
-USAGE
-  $ story config del PROP
-
-DESCRIPTION
-  Reset a configuration property to its default value.
-
-ALIASES
-  $ story config clear
-  $ story config remove
-  $ story config delete
-  $ story config del
-  $ story config rm
-  $ story config d
-
-EXAMPLES
-  $ story config unset defaultProject
-```
-
-## `story config delete PROP`
-
-Reset a configuration property to its default value.
-
-```
-USAGE
-  $ story config delete PROP
-
-DESCRIPTION
-  Reset a configuration property to its default value.
-
-ALIASES
-  $ story config clear
-  $ story config remove
-  $ story config delete
-  $ story config del
-  $ story config rm
-  $ story config d
-
-EXAMPLES
-  $ story config unset defaultProject
-```
-
-## `story config l`
-
-Display the list of current configuration properties.
-
-```
-USAGE
-  $ story config l
-
-DESCRIPTION
-  Display the list of current configuration properties.
-
-ALIASES
-  $ story config list
-  $ story config l
-
-EXAMPLES
-  $ story config
-  defaultAuthor = "Shea"
-  jiraUrl = "https://something.atlassian.net/"
 ```
 
 ## `story config list`
@@ -288,77 +163,11 @@ DESCRIPTION
 
 ALIASES
   $ story config list
-  $ story config l
 
 EXAMPLES
   $ story config
   defaultAuthor = "Shea"
   jiraUrl = "https://something.atlassian.net/"
-```
-
-## `story config remove PROP`
-
-Reset a configuration property to its default value.
-
-```
-USAGE
-  $ story config remove PROP
-
-DESCRIPTION
-  Reset a configuration property to its default value.
-
-ALIASES
-  $ story config clear
-  $ story config remove
-  $ story config delete
-  $ story config del
-  $ story config rm
-  $ story config d
-
-EXAMPLES
-  $ story config unset defaultProject
-```
-
-## `story config rm PROP`
-
-Reset a configuration property to its default value.
-
-```
-USAGE
-  $ story config rm PROP
-
-DESCRIPTION
-  Reset a configuration property to its default value.
-
-ALIASES
-  $ story config clear
-  $ story config remove
-  $ story config delete
-  $ story config del
-  $ story config rm
-  $ story config d
-
-EXAMPLES
-  $ story config unset defaultProject
-```
-
-## `story config s PROP VALUE`
-
-Set a new value for a configuration property.
-
-```
-USAGE
-  $ story config s PROP... VALUE...
-
-DESCRIPTION
-  Set a new value for a configuration property.
-
-ALIASES
-  $ story config s
-
-EXAMPLES
-  $ story config set defaultAuthor Shea B
-  defaultAuthor = Shea B
 ```
 
 ## `story config set PROP VALUE`
@@ -371,9 +180,6 @@ USAGE
 
 DESCRIPTION
   Set a new value for a configuration property.
-
-ALIASES
-  $ story config s
 
 EXAMPLES
   $ story config set defaultAuthor Shea B
@@ -395,11 +201,6 @@ DESCRIPTION
 
 ALIASES
   $ story config clear
-  $ story config remove
-  $ story config delete
-  $ story config del
-  $ story config rm
-  $ story config d
 
 EXAMPLES
   $ story config unset defaultProject
@@ -417,9 +218,6 @@ USAGE
 
 DESCRIPTION
   Retrieve the story identifier from the current Git branch.
-
-ALIASES
-  $ story 
 
 EXAMPLES
   $ story
@@ -554,28 +352,6 @@ EXAMPLES
 ```
 
 _See code: [src/commands/open.ts](https://github.com/sheabunge/storyman/blob/v2.0.0-dev.1/src/commands/open.ts)_
-
-## `story prepare-commit-message COMMITMESSAGEFILE [COMMITSOURCE] [COMMITSHA1]`
-
-```
-USAGE
-  $ story prepare-commit-message COMMITMESSAGEFILE... [COMMITSOURCE...] [COMMITSHA1...]
-
-ALIASES
-  $ story prepare-commit-msg
-  $ story prepare-commit-message
-```
-
-## `story prepare-commit-msg COMMITMESSAGEFILE [COMMITSOURCE] [COMMITSHA1]`
-
-```
-USAGE
-  $ story prepare-commit-msg COMMITMESSAGEFILE... [COMMITSOURCE...] [COMMITSHA1...]
-
-ALIASES
-  $ story prepare-commit-msg
-  $ story prepare-commit-message
-```
 
 ## `story uninstall [REPO]`
 

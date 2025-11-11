@@ -8,7 +8,7 @@ export default class Get extends BaseCommand<typeof Get> {
     '$ story\nSM-12\n'
   ]
 
-  static aliases = ['']
+  static hiddenAliases = ['']
 
   async run() {
     await this.parse()

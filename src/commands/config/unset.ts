@@ -1,7 +1,8 @@
 import { Args } from '@oclif/core'
 import { BaseCommand } from '../../BaseCommand'
 
-const ALIASES = ['clear', 'remove', 'delete', 'del', 'rm', 'd'].map(alias => `config:${alias}`)
+const prefixAliases = (...aliases: string[]) =>
+  aliases.map(alias => `config:${alias}`)
 
 export default class ConfigUnset extends BaseCommand<typeof ConfigUnset> {
   static description = 'Reset a configuration property to its default value.'
@@ -10,7 +11,9 @@ export default class ConfigUnset extends BaseCommand<typeof ConfigUnset> {
     '$ story config unset defaultProject'
   ]
 
-  static aliases = ALIASES
+  static aliases = prefixAliases('clear')
+
+  static hiddenAliases = prefixAliases('remove', 'delete', 'del', 'rm', 'd')
 
   static args = {
     prop: Args.string({
