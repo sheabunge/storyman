@@ -7,8 +7,6 @@ messages, so that changes can be linked to stories and vice versa.
 Instead of doing so manually, which can be prone to inconsistency and mistakes, this tool automates the process by
 rewriting commit messages to include the current story.
 
-![demonstration](demo.gif)
-
 # Installation
 
 Install through npm:
