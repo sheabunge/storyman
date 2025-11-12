@@ -63,6 +63,11 @@ $ git commit -m "Made some changes."
  1 file changed, 71 insertions(+), 3 deletions(-)
 ```
 
+If you're commiting to a branch that does *not* begin with a story tag, such as `main`, storyman will notice and prompt
+if you would like to add one to the commit message anyway:
+
+
+
 ## Tagging authors
 
 Storyman also supports workflows that involve also including the name of the commit authors in each message,
