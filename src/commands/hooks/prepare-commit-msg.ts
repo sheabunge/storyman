@@ -1,9 +1,11 @@
+import figures from '@inquirer/figures'
 import input from '@inquirer/input'
 import { Args } from '@oclif/core'
 import { open, readFile, writeFile } from 'fs/promises'
 import type { FileHandle } from 'node:fs/promises'
-import * as tty from 'node:tty'
+import { ReadStream } from 'node:tty'
 import { EOL } from 'os'
+import { yellow } from 'yoctocolors-cjs'
 import { BaseCommand, STORY_RE } from '../../BaseCommand'
 import { Story } from '../../types/Story'
 import { formatStory } from '../../utils'
@@ -25,7 +27,12 @@ const attemptOpenInput = async (): Promise<FileHandle | undefined> => {
 
 const promptForStory = async (): Promise<string | undefined> =>
   input({
-    message: `${PREFIX} Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged:`
+    message: `${PREFIX} Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged:`,
+    theme: {
+      prefix: {
+        idle: yellow(figures.warning)
+      }
+    }
   })
     .then(response => response.trim())
     .catch((): undefined => undefined)
@@ -62,12 +69,10 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     const inputHandle = await attemptOpenInput()
 
     if (inputHandle) {
-      const stdin = new tty.ReadStream(inputHandle.fd)
-
       Object.defineProperty(process, 'stdin', {
         configurable: true,
         enumerable: true,
-        get: () => stdin
+        get: () => new ReadStream(inputHandle.fd)
       })
 
       const response = await promptForStory()
