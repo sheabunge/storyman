@@ -7,6 +7,8 @@ messages, so that changes can be linked to stories and vice versa.
 Instead of doing so manually, which can be prone to inconsistency and mistakes, this tool automates the process by
 rewriting commit messages to include the current story.
 
+![demonstration](demo.gif)
+
 # Installation
 
 Install through npm:
@@ -35,6 +37,8 @@ Created prepare-commit-msg hook for /home/shea/projects/another-project.
 
 # Usage
 
+## Story branches
+
 storyman v2 has switched to a branch-based method of tracking stories. When working on a new story, create a Git branch
 beginning with the story tag:
 
@@ -55,18 +59,39 @@ $ story
 EG-123
 ```
 
+## Augmenting commit messages
+
 When making a commit, storyman will automatically add the current story tag to the beginning of the commit message:
 
 ```sh-session
 $ git commit -m "Made some changes."
-[master fb98b25] EG-123 Made some changes.
+[EG-123 fb98b25] EG-123 Made some changes.
  1 file changed, 71 insertions(+), 3 deletions(-)
 ```
 
 If you're commiting to a branch that does *not* begin with a story tag, such as `main`, storyman will notice and prompt
 if you would like to add one to the commit message anyway:
 
+```sh-session
+$ git commit -m "Made some changes."
+✔ [storyman] Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged: EG-123
+[main fb98b25] EG-123 Made some changes.
+ 1 file changed, 71 insertions(+), 3 deletions(-)
+```
 
+## Commit protection
+
+storyman has the ability to connect to your Jira instance to fetch information about the current story. This can be
+initiated by running `story info`, where you will need to provide the Jira site URL and an API token.
+
+Once this has been initialised, storyman will also validate the current story when making commits. If the story is
+marked as resolved in Jira, a warning will be shown, and you will be prompted to confirm that you wish to proceed with
+the commit:
+
+```sh-session
+$ git commit -m "Made some changes."
+⚠ [storyman] Warning: EG-123 is resolved as 'Done'. Continue with this commit? (Y/n)
+```
 
 ## Tagging authors
 
@@ -102,6 +127,7 @@ Opening https://something.atlassian.net/browse/EG-12
 # Command Reference
 
 <!-- commands -->
+
 * [`story config`](#story-config)
 * [`story config clear PROP`](#story-config-clear-prop)
 * [`story config list`](#story-config-list)
@@ -136,7 +162,8 @@ EXAMPLES
   jiraUrl = "https://something.atlassian.net/"
 ```
 
-_See code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v2.1.0/src/commands/config/index.ts)_
+_See
+code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v2.1.0/src/commands/config/index.ts)_
 
 ## `story config clear PROP`
 
@@ -213,7 +240,8 @@ EXAMPLES
   $ story config unset defaultProject
 ```
 
-_See code: [src/commands/config/unset.ts](https://github.com/sheabunge/storyman/blob/v2.1.0/src/commands/config/unset.ts)_
+_See
+code: [src/commands/config/unset.ts](https://github.com/sheabunge/storyman/blob/v2.1.0/src/commands/config/unset.ts)_
 
 ## `story get`
 

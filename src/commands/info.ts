@@ -23,8 +23,15 @@ Current story is SM-123: Example story name.
   async run() {
     const { args } = await this.parse(Info)
 
+    const userConfig = await this.userConfig
     const story = await this.getStoryWithFallback(args.story)
-    const storyInfo = await makeStoryInfoRequest(await this.userConfig, story, ['resolution', 'status', 'summary', 'assignee', 'project'])
+
+    const storyInfo = await makeStoryInfoRequest({
+      story,
+      jiraUrl: await userConfig.promptFor('jiraUrl'),
+      jiraToken: await userConfig.promptFor('jiraToken'),
+      fields: ['resolution', 'status', 'summary', 'assignee', 'project']
+    })
 
     if (!storyInfo) {
       this.error('Failed to fetch story information from Jira. Please check your Jira configuration and network connectivity.')
