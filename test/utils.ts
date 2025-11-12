@@ -1,13 +1,9 @@
 import { mkdtemp, rm, rmdir } from 'fs/promises'
-import { exec as legacyExec } from 'child_process'
 import { tmpdir } from 'os'
 import { join } from 'path'
 import { chdir, cwd } from 'process'
-import { promisify } from 'util'
 import { USER_CONFIG_FILENAME } from '../src/BaseCommand'
-import { deleteIfExists } from '../src/utils'
-
-const exec = promisify(legacyExec)
+import { deleteIfExists, exec } from '../src/utils'
 
 const TEMP_DIR_PREFIX = 'storyman-test-'
 

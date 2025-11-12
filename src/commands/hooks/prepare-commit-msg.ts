@@ -25,15 +25,19 @@ const attemptOpenInput = async (): Promise<FileHandle | undefined> => {
   }
 }
 
-const promptForStory = async (): Promise<string | undefined> =>
-  input({
-    message: `${PREFIX} Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged:`,
-    theme: {
-      prefix: {
-        idle: yellow(figures.warning)
+const promptForStory = async (inputStream?: NodeJS.ReadableStream): Promise<string | undefined> =>
+  input(
+    {
+      message: `${PREFIX} Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged:`,
+      prefill: 'editable',
+      theme: {
+        prefix: {
+          idle: yellow(figures.warning)
+        }
       }
-    }
-  })
+    },
+    { input: inputStream }
+  )
     .then(response => response.trim())
     .catch((): undefined => undefined)
 
@@ -69,14 +73,11 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     const inputHandle = await attemptOpenInput()
 
     if (inputHandle) {
-      Object.defineProperty(process, 'stdin', {
-        configurable: true,
-        enumerable: true,
-        get: () => new ReadStream(inputHandle.fd)
-      })
+      const stream = new ReadStream(inputHandle.fd)
+      const response = await promptForStory(stream)
+      stream.destroy()
+      await inputHandle.close()
 
-      const response = await promptForStory()
-      process.stdin.destroy()
       return response
     }
 
@@ -119,7 +120,7 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
 
     await writeFile(
       commitMessageFile,
-      [[storyTag, messageHead, authorTag].join(' '), ...messageBody].join(EOL)
+      [[storyTag, messageHead, authorTag].filter(Boolean).join(' '), ...messageBody].join(EOL)
     )
   }
 }
