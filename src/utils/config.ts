@@ -1,4 +1,4 @@
-import input from '@inquirer/input'
+import { input, password } from '@inquirer/prompts'
 import { UserConfigProps } from '../types/UserConfigProps'
 import type { UserConfigSpecs } from '../types/UserConfigSpecs'
 import { trimTrailingSlash } from './paths'
@@ -24,7 +24,7 @@ export const USER_CONFIG_SPEC: UserConfigSpecs<UserConfigProps> = {
   jiraToken: {
     defaultValue: undefined,
     prompt: () =>
-      input({
+      password({
         message: 'Jira personal access token:'
       }),
     parse: token => Buffer.from(token.trim()).toString('base64')

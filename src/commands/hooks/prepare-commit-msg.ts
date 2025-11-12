@@ -1,5 +1,5 @@
 import figures from '@inquirer/figures'
-import input from '@inquirer/input'
+import { confirm, input } from '@inquirer/prompts'
 import { Args } from '@oclif/core'
 import { open, readFile, writeFile } from 'fs/promises'
 import type { FileHandle } from 'node:fs/promises'
@@ -8,38 +8,13 @@ import { EOL } from 'os'
 import { yellow } from 'yoctocolors-cjs'
 import { BaseCommand } from '../../BaseCommand'
 import { Story } from '../../types/Story'
-import { formatStory, STORY_RE } from '../../utils/story'
+import { makeStoryInfoRequest } from '../../utils/jira'
+import { formatStory, parseStory, STORY_RE } from '../../utils/story'
 import { constants } from 'fs'
 
 const PREFIX = '[storyman]'
 const VALID_SOURCES = new Set(['commit', 'message'])
 const AUTHOR_RE = /\[(?<author>.+)]\s*^/m
-
-const attemptOpenInput = async (): Promise<FileHandle | undefined> => {
-  const { O_RDONLY, O_NOCTTY } = constants
-
-  try {
-    return await open('/dev/tty', O_RDONLY + O_NOCTTY)
-  } catch {
-    return undefined
-  }
-}
-
-const promptForStory = async (inputStream?: NodeJS.ReadableStream): Promise<string | undefined> =>
-  input(
-    {
-      message: `${PREFIX} Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged:`,
-      prefill: 'editable',
-      theme: {
-        prefix: {
-          idle: yellow(figures.warning)
-        }
-      }
-    },
-    { input: inputStream }
-  )
-    .then(response => response.trim())
-    .catch((): undefined => undefined)
 
 export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMsg> {
   public static hidden = true
@@ -54,6 +29,41 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     commitSHA1: Args.string()
   }
 
+  private inputHandle: FileHandle | undefined
+
+  private readStream: ReadStream | undefined
+
+  private getReadStream = async (): Promise<ReadStream | undefined> => {
+    if (process.stdin.isTTY) {
+      return undefined
+    }
+
+    if (!this.inputHandle) {
+      const { O_RDONLY, O_NOCTTY } = constants
+
+      try {
+        this.inputHandle = await open('/dev/tty', O_RDONLY + O_NOCTTY)
+      } catch {
+        return undefined
+      }
+    }
+
+    this.readStream = new ReadStream(this.inputHandle.fd)
+    return this.readStream
+  }
+
+  private closeReadStream = async (): Promise<void> => {
+    if (this.readStream) {
+      this.readStream.destroy()
+      this.readStream = undefined
+    }
+
+    if (this.inputHandle) {
+      await this.inputHandle.close()
+      this.inputHandle = undefined
+    }
+  }
+
   private async getStoryTag(story: Story | undefined, commitMessage: string): Promise<string | undefined> {
     const existingTag = commitMessage.match(STORY_RE)
 
@@ -63,26 +73,19 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     }
 
     if (story) {
-      return `${formatStory(story)} `
+      return formatStory(story)
     }
 
-    if (process.stdin.isTTY) {
-      return promptForStory()
-    }
-
-    const inputHandle = await attemptOpenInput()
-
-    if (inputHandle) {
-      const stream = new ReadStream(inputHandle.fd)
-      const response = await promptForStory(stream)
-      stream.destroy()
-      await inputHandle.close()
-
-      return response
-    }
-
-    this.warn(`${PREFIX} Warning: committing to a non-story branch and unable to prompt.`)
-    return undefined
+    return input(
+      {
+        message: `${PREFIX} Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged:`,
+        theme: { prefix: { idle: yellow(figures.warning) } }
+      },
+      { input: await this.getReadStream() }
+    )
+      .then(response => response.trim())
+      .catch((): undefined => undefined)
+      .finally(() => this.closeReadStream())
   }
 
   private async getAuthorTag(commitMessage: string): Promise<string | undefined> {
@@ -116,6 +119,28 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
 
     if (!storyTag && !authorTag) {
       this.exit(0)
+    }
+
+    if (storyTag) {
+      const story = parseStory(storyTag)
+      const storyInfo = await makeStoryInfoRequest(await this.userConfig, story, ['resolution'])
+
+      if (!storyInfo) {
+        this.warn('Could not contact Jira to verify story status.')
+      } else if (storyInfo.fields?.resolution) {
+        const answer = await confirm(
+          {
+            message: `${formatStory(story)} is marked as resolved (${storyInfo.fields.resolution.name}). Continue with this commit?`,
+            theme: { prefix: { idle: yellow(figures.warning) } }
+          },
+          { input: await this.getReadStream() }
+        ).finally(() => this.closeReadStream())
+
+        if (!answer) {
+          await writeFile(commitMessageFile, '')
+          return
+        }
+      }
     }
 
     await writeFile(

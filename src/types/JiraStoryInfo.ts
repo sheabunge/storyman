@@ -5,7 +5,7 @@ export interface JiraStoryInfo {
   fields?: {
     summary: string
     assignee?: string | null
-    resolution: {
+    resolution?: null | {
       self: string
       id: string
       description: string
