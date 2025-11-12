@@ -18,11 +18,7 @@ export default defineConfig(
         ecmaFeatures: { jsx: true },
         tsconfigRootDir: import.meta.dirname,
         projectService: {
-          allowDefaultProject: [
-            'eslint.config.mjs',
-            'test/*.ts',
-            'test/commands/*.test.ts'
-          ]
+          allowDefaultProject: ['eslint.config.mjs']
         }
       }
     },
