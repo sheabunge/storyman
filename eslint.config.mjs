@@ -41,6 +41,8 @@ export default defineConfig(
       'object-curly-spacing': ['error', 'always'],
       'perfectionist/sort-classes': 'off',
       'perfectionist/sort-imports': 'off',
+      'perfectionist/sort-interfaces': 'off',
+      'perfectionist/sort-object-types': 'off',
       'perfectionist/sort-objects': 'off',
       'perfectionist/sort-union-types': 'off',
       'unicorn/filename-case': ['error', { case: 'pascalCase' }],

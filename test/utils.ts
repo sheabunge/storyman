@@ -3,7 +3,8 @@ import { tmpdir } from 'os'
 import { join } from 'path'
 import { chdir, cwd } from 'process'
 import { USER_CONFIG_FILENAME } from '../src/BaseCommand'
-import { deleteIfExists, exec } from '../src/utils'
+import { exec } from '../src/utils/exec'
+import { deleteIfExists } from '../src/utils/paths'
 
 const TEMP_DIR_PREFIX = 'storyman-test-'
 

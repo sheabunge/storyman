@@ -4,11 +4,10 @@ import { join } from 'path'
 import UserConfig from './UserConfig'
 import type { Story } from './types/Story'
 import { UserConfigProps } from './types/UserConfigProps'
-import { findClosestFileDir } from './utils'
-import { getCurrentBranch } from './utils/git'
-
-export const USER_CONFIG_FILENAME = '.storyman.json'
-export const STORY_RE = /^(?<project>[A-Z]+)-(?<number>\d+)/
+import { USER_CONFIG_FILENAME, USER_CONFIG_SPEC } from './utils/config'
+import { getCurrentBranch } from './utils/exec'
+import { findClosestFileDir } from './utils/paths'
+import { parseStory } from './utils/story'
 
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<T['flags']>
@@ -17,11 +16,6 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   protected args!: Args<T>
 
   protected flags!: Flags<T>
-
-  protected static userConfigDefaults: UserConfigProps = {
-    defaultAuthor: '',
-    jiraUrl: ''
-  }
 
   private _configDir: string | undefined
 
@@ -42,38 +36,33 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return this._userConfig
       ? Promise.resolve(this._userConfig)
       : this.configDir.then(storyDir => {
-        const userConfig = new UserConfig(
-          join(storyDir, USER_CONFIG_FILENAME),
-          BaseCommand.userConfigDefaults
-        )
-
-        this._userConfig = userConfig
-        return userConfig
+        this._userConfig = new UserConfig(USER_CONFIG_SPEC, join(storyDir, USER_CONFIG_FILENAME))
+        return this._userConfig
       })
-  }
-
-  private parseStory(branchName: string): Story | undefined {
-    const match = STORY_RE.exec(branchName)
-
-    if (!match?.groups?.project || !match.groups?.number) {
-      return undefined
-    }
-
-    const { project, number } = match.groups
-    return { project, number: Number(number) }
   }
 
   async getStoryIfAvailable(): Promise<Story | undefined> {
     const branch = await getCurrentBranch()
-    return this.parseStory(branch)
+    return parseStory(branch)
   }
 
   async getStoryOrError(): Promise<Story> {
     const branchName = await getCurrentBranch()
-    const story = this.parseStory(branchName)
+    const story = parseStory(branchName)
 
     if (!story) {
       this.error(`Could not find story in branch '${branchName}'.`)
+    }
+
+    return story
+  }
+
+  async getStoryWithFallback(fallbackStory: string | undefined): Promise<Story> {
+    const localStory = await this.getStoryIfAvailable()
+    const story = fallbackStory ? parseStory(fallbackStory, localStory?.project) : localStory
+
+    if (!story) {
+      this.error('No story found or provided.')
     }
 
     return story

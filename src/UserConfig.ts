@@ -1,19 +1,15 @@
 import { readFile, writeFile } from 'fs/promises'
-
-const FALSY_STRINGS = new Set(['0', 'false', 'no'])
+import type { UserConfigSpecs } from './types/UserConfigSpecs'
 
 const parseJson = <T>(data: string, allowedProperties: Set<keyof T | string>): Partial<T> =>
   (Object.fromEntries(Object
     .entries(JSON.parse(data))
     .filter(([prop]) => allowedProperties.has(prop))) as Partial<T>)
 
-const parseBoolean = (value: unknown): boolean =>
-  Boolean(value) && !('string' === typeof value && FALSY_STRINGS.has(value.toLowerCase()))
-
 export default class UserConfig<T extends { [P in keyof T]: unknown }> {
   public readonly configFile: string
 
-  public readonly defaults: T
+  public readonly specs: UserConfigSpecs<T>
 
   public readonly validProps: Set<keyof T | string>
 
@@ -21,11 +17,24 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
 
   private dirty: Partial<T>
 
-  constructor(configFile: string, defaultValues: T) {
+  constructor(specs: UserConfigSpecs<T>, configFile: string) {
     this.configFile = configFile
-    this.defaults = defaultValues
-    this.validProps = new Set(Object.keys(defaultValues))
+    this.specs = specs
+    this.validProps = new Set(Object.keys(specs))
     this.dirty = {}
+  }
+
+  private buildInitialProps = (): T => {
+    const defaults: Partial<T> = {}
+
+    for (const prop in this.specs) {
+      // eslint-disable-next-line n/no-unsupported-features/es-builtins, prefer-object-has-own
+      if (Object.hasOwn ? Object.hasOwn(this.specs, prop) : Object.prototype.hasOwnProperty.call(this.specs, prop)) {
+        defaults[prop] = this.specs[prop].defaultValue
+      }
+    }
+
+    return defaults as T
   }
 
   private read = (): Promise<Partial<T>> =>
@@ -34,7 +43,7 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
       : readFile(this.configFile)
         .then(content =>
           parseJson<T>(content.toString(), this.validProps))
-        .catch(() => this.defaults)
+        .catch(this.buildInitialProps)
         .then(stored => {
           this.stored = stored
           return stored
@@ -42,26 +51,33 @@ export default class UserConfig<T extends { [P in keyof T]: unknown }> {
 
   getAll = () =>
     this.read().then(stored =>
-      Object.fromEntries((Object.keys(this.defaults) as Array<keyof T>)
-        .map(prop => [prop, this.dirty[prop] ?? stored[prop] ?? this.defaults[prop]])))
+      Object.fromEntries((Object.keys(this.specs) as Array<keyof T>)
+        .map(prop => [prop, this.dirty[prop] ?? stored[prop] ?? this.specs[prop].defaultValue])))
 
   get = <K extends keyof T>(prop: K): Promise<T[K]> =>
     this.read().then(stored =>
-      this.dirty[prop] ?? stored[prop] ?? this.defaults[prop])
+      this.dirty[prop] ?? stored[prop] ?? this.specs[prop].defaultValue)
 
-  private parseValue = <K extends keyof T>(prop: K, value: T[K]): T[K] => {
-    switch (typeof this.defaults[prop]) {
-      case 'boolean':
-        return parseBoolean(value) as T[K]
-      case 'number':
-        return Number(value) as T[K]
-      default:
-        return value
+  promptFor = async <K extends keyof T>(prop: K): Promise<T[K]> => {
+    const currentValue = await this.get(prop)
+
+    if (currentValue !== undefined) {
+      return currentValue
     }
+
+    const spec = this.specs[prop]
+
+    if (spec.prompt === undefined) {
+      throw new Error(`Cannot find prompt for ${prop.toString()}`)
+    }
+
+    const newValue = this.set(prop, await spec.prompt())
+    await this.write()
+    return newValue
   }
 
-  set = <K extends keyof T>(prop: K, value: T[K]): T[K] => {
-    const actualValue = this.parseValue(prop, value)
+  set = <K extends keyof T>(prop: K, value: string): T[K] => {
+    const actualValue = this.specs[prop].parse(value)
     this.dirty[prop] = actualValue
     return actualValue
   }

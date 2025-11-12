@@ -1,5 +1,6 @@
 import { Args } from '@oclif/core'
 import { BaseCommand } from '../../BaseCommand'
+import { USER_CONFIG_SPEC } from '../../utils/config'
 
 const prefixAliases = (...aliases: string[]) =>
   aliases.map(alias => `config:${alias}`)
@@ -19,7 +20,7 @@ export default class ConfigUnset extends BaseCommand<typeof ConfigUnset> {
     prop: Args.string({
       name: 'prop',
       required: true,
-      options: Object.keys(BaseCommand.userConfigDefaults)
+      options: Object.keys(USER_CONFIG_SPEC)
     })
   }
 

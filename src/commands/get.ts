@@ -1,5 +1,5 @@
 import { BaseCommand } from '../BaseCommand'
-import { formatStory } from '../utils'
+import { formatStory } from '../utils/story'
 
 export default class Get extends BaseCommand<typeof Get> {
   static description = 'Retrieve the story identifier from the current Git branch.'

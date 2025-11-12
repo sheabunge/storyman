@@ -1,5 +1,6 @@
 import { Args } from '@oclif/core'
 import { BaseCommand } from '../../BaseCommand'
+import { USER_CONFIG_SPEC } from '../../utils/config'
 
 export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
   static description = 'Set a new value for a configuration property.'
@@ -17,7 +18,7 @@ defaultAuthor = Shea B
   static args = {
     prop: Args.string({
       required: true,
-      options: Object.keys(BaseCommand.userConfigDefaults)
+      options: Object.keys(USER_CONFIG_SPEC)
     }),
     value: Args.string({
       required: true
