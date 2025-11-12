@@ -1,4 +1,4 @@
-import { input } from '@inquirer/prompts'
+import input from '@inquirer/input'
 import { Args } from '@oclif/core'
 import { open, readFile, writeFile } from 'fs/promises'
 import type { FileHandle } from 'node:fs/promises'

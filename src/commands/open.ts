@@ -1,6 +1,6 @@
 import { Args } from '@oclif/core'
-import { input } from '@inquirer/prompts'
 import open from 'open'
+import input from '@inquirer/input'
 import { BaseCommand } from '../BaseCommand'
 import { trimTrailingSlash } from '../utils'
 
