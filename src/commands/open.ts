@@ -53,7 +53,7 @@ Opening https://something.atlassian.net/browse/TS-19
   async run() {
     const baseUrl = await this.getBaseUrl()
 
-    const story = await this.getStory()
+    const story = await this.getStoryIfAvailable()
     const url = story ? `${trimTrailingSlash(baseUrl)}/browse/${story}` : baseUrl
 
     this.log(`Opening ${url}`)

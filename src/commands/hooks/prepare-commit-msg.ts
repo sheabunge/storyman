@@ -1,13 +1,34 @@
-import { readFile, writeFile } from 'fs/promises'
+import { input } from '@inquirer/prompts'
+import { Args } from '@oclif/core'
+import { open, readFile, writeFile } from 'fs/promises'
+import type { FileHandle } from 'node:fs/promises'
+import * as tty from 'node:tty'
 import { EOL } from 'os'
 import { BaseCommand, STORY_RE } from '../../BaseCommand'
-import { Args } from '@oclif/core'
 import { Story } from '../../types/Story'
 import { formatStory } from '../../utils'
+import { constants } from 'fs'
 
 const PREFIX = '[storyman]'
 const VALID_SOURCES = new Set(['commit', 'message'])
 const AUTHOR_RE = /\[(?<author>.+)]\s*^/m
+
+const attemptOpenInput = async (): Promise<FileHandle | undefined> => {
+  const { O_RDONLY, O_NOCTTY } = constants
+
+  try {
+    return await open('/dev/tty', O_RDONLY + O_NOCTTY)
+  } catch {
+    return undefined
+  }
+}
+
+const promptForStory = async (): Promise<string | undefined> =>
+  input({
+    message: `${PREFIX} Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged:`
+  })
+    .then(response => response.trim())
+    .catch((): undefined => undefined)
 
 export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMsg> {
   public static hidden = true
@@ -34,7 +55,27 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
       return `${formatStory(story)} `
     }
 
-    this.warn(`${PREFIX} Commit does not contain story tag.`)
+    if (process.stdin.isTTY) {
+      return promptForStory()
+    }
+
+    const inputHandle = await attemptOpenInput()
+
+    if (inputHandle) {
+      const stdin = new tty.ReadStream(inputHandle.fd)
+
+      Object.defineProperty(process, 'stdin', {
+        configurable: true,
+        enumerable: true,
+        get: () => stdin
+      })
+
+      const response = await promptForStory()
+      process.stdin.destroy()
+      return response
+    }
+
+    this.warn(`${PREFIX} Warning: committing to a non-story branch and unable to prompt.`)
     return undefined
   }
 
@@ -45,7 +86,7 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
     if (commitAuthor) {
       this.log(`${PREFIX} Commit is already tagged with ${commitAuthor} as author.`)
     } else if (defaultAuthor) {
-      return ` [${defaultAuthor}]`
+      return `[${defaultAuthor}]`
     }
 
     return undefined
@@ -59,7 +100,7 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
       this.exit(0)
     }
 
-    const story = await this.getStory()
+    const story = await this.getStoryIfAvailable()
     const commitMessage = (await readFile(commitMessageFile)).toString()
 
     const [messageHead, ...messageBody] = commitMessage.split(EOL)
@@ -73,7 +114,7 @@ export default class PrepareCommitMsg extends BaseCommand<typeof PrepareCommitMs
 
     await writeFile(
       commitMessageFile,
-      [[storyTag, messageHead, authorTag].join(''), ...messageBody].join(EOL)
+      [[storyTag, messageHead, authorTag].join(' '), ...messageBody].join(EOL)
     )
   }
 }

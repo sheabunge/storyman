@@ -14,10 +14,10 @@ Reading configuration from /home/shea/.storyman.json.
   ]
 
   async run() {
-    const story = await this.getStory()
+    const story = await this.getStoryIfAvailable()
     const userConfig = await this.userConfig
 
-    this.log(`Current story is ${formatStory(story) ?? 'not set'}.`)
+    this.log(`Current story is ${(story && formatStory(story)) || 'not set'}.`)
 
     this.log()
 

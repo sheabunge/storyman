@@ -12,7 +12,7 @@ export default class Get extends BaseCommand<typeof Get> {
 
   async run() {
     await this.parse()
-    const story = await this.getStory()
+    const story = await this.getStoryOrError()
     this.log(formatStory(story))
   }
 }

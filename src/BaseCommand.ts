@@ -52,16 +52,30 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
       })
   }
 
-  async getStory(): Promise<Story> {
-    const branch = await getCurrentBranch()
-
-    const match = STORY_RE.exec(branch)
+  private parseStory(branchName: string): Story | undefined {
+    const match = STORY_RE.exec(branchName)
 
     if (!match?.groups?.project || !match.groups?.number) {
-      this.error(`Could not find story in branch '${branch}'.`)
+      return undefined
     }
 
     const { project, number } = match.groups
     return { project, number: Number(number) }
+  }
+
+  async getStoryIfAvailable(): Promise<Story | undefined> {
+    const branch = await getCurrentBranch()
+    return this.parseStory(branch)
+  }
+
+  async getStoryOrError(): Promise<Story> {
+    const branchName = await getCurrentBranch()
+    const story = this.parseStory(branchName)
+
+    if (!story) {
+      this.error(`Could not find story in branch '${branchName}'.`)
+    }
+
+    return story
   }
 }
