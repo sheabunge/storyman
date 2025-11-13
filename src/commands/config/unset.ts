@@ -9,7 +9,7 @@ export default class ConfigUnset extends BaseCommand<typeof ConfigUnset> {
   static description = 'Reset a configuration property to its default value.'
 
   static examples = [
-    '$ story config unset defaultProject'
+    '$ story config unset defaultAuthor'
   ]
 
   static aliases = prefixAliases('clear')

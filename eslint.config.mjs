@@ -43,6 +43,7 @@ export default defineConfig(
       'perfectionist/sort-union-types': 'off',
       'unicorn/filename-case': ['error', { case: 'pascalCase' }],
       'unicorn/import-style': 'off',
+      'unicorn/no-array-reduce': 'off',
       'unicorn/no-nested-ternary': 'off',
       'unicorn/prefer-module': 'off',
       'unicorn/prefer-node-protocol': 'off',

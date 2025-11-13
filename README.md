@@ -74,7 +74,8 @@ if you would like to add one to the commit message anyway:
 
 ```sh-session
 $ git commit -m "Made some changes."
-✔ [storyman] Commiting to a non-story branch. Enter a story to tag this commit, or leave blank to commit untagged: EG-123
+✔ [storyman] Commiting to a non-story branch. Enter a story to tag this commit, or
+ leave blank to commit untagged: EG-123
 [main fb98b25] EG-123 Made some changes.
  1 file changed, 71 insertions(+), 3 deletions(-)
 ```
@@ -127,6 +128,7 @@ Opening https://something.atlassian.net/browse/EG-12
 # Command Reference
 
 <!-- commands -->
+
 * [`story config`](#story-config)
 * [`story config clear PROP`](#story-config-clear-prop)
 * [`story config list`](#story-config-list)
@@ -161,7 +163,8 @@ EXAMPLES
   jiraUrl = "https://something.atlassian.net/"
 ```
 
-_See code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/config/index.ts)_
+_See
+code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/config/index.ts)_
 
 ## `story config clear PROP`
 
@@ -178,7 +181,7 @@ ALIASES
   $ story config clear
 
 EXAMPLES
-  $ story config unset defaultProject
+  $ story config unset defaultAuthor
 ```
 
 ## `story config list`
@@ -235,10 +238,11 @@ ALIASES
   $ story config clear
 
 EXAMPLES
-  $ story config unset defaultProject
+  $ story config unset defaultAuthor
 ```
 
-_See code: [src/commands/config/unset.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/config/unset.ts)_
+_See
+code: [src/commands/config/unset.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/config/unset.ts)_
 
 ## `story get`
 

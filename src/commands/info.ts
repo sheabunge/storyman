@@ -3,6 +3,7 @@ import { Args } from '@oclif/core'
 import { green } from 'yoctocolors-cjs'
 import { BaseCommand } from '../BaseCommand'
 import { makeStoryInfoRequest } from '../utils/jira'
+import { printTable } from '../utils/text'
 
 export default class Info extends BaseCommand<typeof Info> {
   static description = 'View information about a story.'
@@ -37,11 +38,20 @@ Current story is SM-123: Example story name.
       this.error('Failed to fetch story information from Jira. Please check your Jira configuration and network connectivity.')
     }
 
-    this.log(`Current story is ${storyInfo.key}${storyInfo.fields.resolution ? ` ${green(figures.tick)}` : ''}`)
+    const { project, assignee, status, resolution, summary } = storyInfo.fields
+
+    this.log(`Current story is ${storyInfo.key}${resolution ? ` ${green(figures.tick)}` : ''}`)
     this.log()
-    this.log(`Project:\t${storyInfo.fields.project.name}`)
-    this.log(`Summary:\t${storyInfo.fields.summary}`)
-    this.log(`Assignee:\t${storyInfo.fields.assignee ?? 'Unassigned'}`)
-    this.log(`Status:\t\t${storyInfo.fields?.status?.name ?? 'Unknown'}`)
+
+    const table = [
+      ['Project:', project.name],
+      ['Summary:', summary],
+      ['Assignee:', assignee ? `${assignee.displayName} (${assignee.name})` : 'Unassigned'],
+      ['Status:', status?.name ?? 'Unknown']
+    ]
+
+    printTable(table, row => {
+      this.log(row)
+    })
   }
 }
