@@ -128,7 +128,6 @@ Opening https://something.atlassian.net/browse/EG-12
 # Command Reference
 
 <!-- commands -->
-
 * [`story config`](#story-config)
 * [`story config clear PROP`](#story-config-clear-prop)
 * [`story config list`](#story-config-list)
@@ -139,6 +138,7 @@ Opening https://something.atlassian.net/browse/EG-12
 * [`story info [STORY]`](#story-info-story)
 * [`story install [REPO]`](#story-install-repo)
 * [`story jira [STORY]`](#story-jira-story)
+* [`story list`](#story-list)
 * [`story open [STORY]`](#story-open-story)
 * [`story uninstall [REPO]`](#story-uninstall-repo)
 
@@ -163,8 +163,7 @@ EXAMPLES
   jiraUrl = "https://something.atlassian.net/"
 ```
 
-_See
-code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/config/index.ts)_
+_See code: [src/commands/config/index.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/config/index.ts)_
 
 ## `story config clear PROP`
 
@@ -221,7 +220,7 @@ EXAMPLES
   defaultAuthor = Shea B
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/config/set.ts)_
 
 ## `story config unset PROP`
 
@@ -241,8 +240,7 @@ EXAMPLES
   $ story config unset defaultAuthor
 ```
 
-_See
-code: [src/commands/config/unset.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/config/unset.ts)_
+_See code: [src/commands/config/unset.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/config/unset.ts)_
 
 ## `story get`
 
@@ -260,7 +258,7 @@ EXAMPLES
   SM-12
 ```
 
-_See code: [src/commands/get.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/get.ts)_
+_See code: [src/commands/get.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/get.ts)_
 
 ## `story help [COMMAND]`
 
@@ -301,7 +299,7 @@ EXAMPLES
   Current story is SM-123: Example story name.
 ```
 
-_See code: [src/commands/info.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/info.ts)_
+_See code: [src/commands/info.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/info.ts)_
 
 ## `story install [REPO]`
 
@@ -330,7 +328,7 @@ EXAMPLES
   Created prepare-commit-msg hook for /home/shea/projects/another-project.
 ```
 
-_See code: [src/commands/install.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/install.ts)_
 
 ## `story jira [STORY]`
 
@@ -360,6 +358,20 @@ EXAMPLES
   Opening https://something.atlassian.net/browse/TS-19
 ```
 
+## `story list`
+
+List stories assigned to the current Jira user.
+
+```
+USAGE
+  $ story list
+
+DESCRIPTION
+  List stories assigned to the current Jira user.
+```
+
+_See code: [src/commands/list.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/list.ts)_
+
 ## `story open [STORY]`
 
 Open the active story in Jira.
@@ -388,7 +400,7 @@ EXAMPLES
   Opening https://something.atlassian.net/browse/TS-19
 ```
 
-_See code: [src/commands/open.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/open.ts)_
+_See code: [src/commands/open.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/open.ts)_
 
 ## `story uninstall [REPO]`
 
@@ -414,5 +426,5 @@ EXAMPLES
   Removed prepare-commit-msg hook from /home/shea/projects/another-project.
 ```
 
-_See code: [src/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v2.1.1/src/commands/uninstall.ts)_
+_See code: [src/commands/uninstall.ts](https://github.com/sheabunge/storyman/blob/v2.2.0/src/commands/uninstall.ts)_
 <!-- commandsstop -->
